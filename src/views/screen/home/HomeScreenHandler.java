@@ -1,18 +1,10 @@
 package views.screen.home;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Logger;
-
 import common.exception.ViewCartException;
 import controller.HomeController;
 import controller.InvoiceListController;
 import controller.ViewCartController;
 import entity.cart.Cart;
-import entity.invoice.Invoice;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,10 +20,16 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
-import views.screen.invoice.InvoiceDetailHandler;
 import views.screen.invoicelist.InvoiceListHandler;
 import views.screen.media.MediaDetailHandler;
 import views.screen.popup.PopupScreen;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Logger;
 
 
 public class HomeScreenHandler extends BaseScreenHandler implements Initializable{

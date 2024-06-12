@@ -1,14 +1,7 @@
 package views.screen.shipping;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.ResourceBundle;
-
-import controller.PlaceOrderController;
 import common.exception.InvalidDeliveryInfoException;
+import controller.PlaceOrderController;
 import entity.invoice.Invoice;
 import entity.order.Order;
 import javafx.beans.property.BooleanProperty;
@@ -26,6 +19,13 @@ import utils.Configs;
 import views.screen.BaseScreenHandler;
 import views.screen.invoice.InvoiceScreenHandler;
 import views.screen.popup.PopupScreen;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 public class ShippingScreenHandler extends BaseScreenHandler implements Initializable {
 	@FXML
@@ -47,13 +47,19 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 	private ComboBox<String> province;
 
 	@FXML
-	private ImageView aimsimage;
+	private ImageView aimsImage;
 
 	private Order order;
 
 	public ShippingScreenHandler(Stage stage, String screenPath, Order order) throws IOException {
 		super(stage, screenPath);
 		this.order = order;
+		File file = new File("assets/images/Logo.png");
+		Image im = new Image(file.toURI().toString());
+		aimsImage.setImage(im);
+		aimsImage.setOnMouseClicked(e -> {
+			this.getPreviousScreen().show();
+		});
 	}
 
 	@Override
@@ -66,12 +72,6 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			}
 		});
 		this.province.getItems().addAll(Configs.PROVINCES);
-		File file = new File("assets/images/Logo.png");
-		Image im = new Image(file.toURI().toString());
-		this.aimsimage.setImage(im);
-		aimsimage.setOnMouseClicked(e -> {
-			homeScreenHandler.show();
-		});
 	}
 
 	@FXML
@@ -111,8 +111,5 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		return (PlaceOrderController) super.getBController();
 	}
 
-	public void notifyError(){
-		// TODO: implement later on if we need
-	}
 
 }

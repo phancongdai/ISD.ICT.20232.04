@@ -1,20 +1,18 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Hashtable;
-import java.util.Map;
-
-import common.exception.InvalidCardException;
 import common.exception.PaymentException;
 import common.exception.UnrecognizedException;
 import entity.cart.Cart;
 import entity.invoice.Invoice;
-import entity.payment.CreditCard;
 import entity.payment.PaymentTransaction;
 import subsystem.InterbankInterface;
-import subsystem.InterbankSubsystem;
+import subsystem.VnPayInterface;
+import subsystem.VnPaySubsystem;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -28,9 +26,13 @@ public class PaymentController extends BaseController {
 
 	/**
 	 * Represent the Interbank subsystem
+	 *
 	 */
+	private VnPayInterface vnPayService;
 	private InterbankInterface interbank;
-
+	public PaymentController() {
+		vnPayService = new VnPaySubsystem();
+	}
 	public PaymentController(InterbankInterface interbank){
 		this.interbank = interbank;
 	}
@@ -57,6 +59,10 @@ public class PaymentController extends BaseController {
 		}catch (PaymentException e){
 			throw e;
 		}
+	}
+	public String getUrlPay(int amount, String content) {
+		var url = vnPayService.generatePayUrl(amount, content);
+		return url;
 	}
 
 	public void emptyCart(){

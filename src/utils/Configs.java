@@ -54,6 +54,8 @@ public class Configs {
 	public static final String POPUP_PATH = "/views/fxml/popup.fxml";
 	public static final String INVOICE_LIST_PATH = "/views/fxml/invoice_list.fxml";
 
+	public static final String PAY_SCREEN_PATH = "/views/fxml/pay.fxml";
+
 	public static Font REGULAR_FONT = Font.font("Segoe UI", FontWeight.NORMAL, FontPosture.REGULAR, 24);
 
 	public static String[] PROVINCES = { "Bắc Giang", "Bắc Kạn", "Cao Bằng", "Hà Giang", "Lạng Sơn", "Phú Thọ",

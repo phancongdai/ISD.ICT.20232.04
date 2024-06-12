@@ -2,18 +2,32 @@ package entity.payment;
 
 import entity.db.AIMSDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PaymentTransaction {
 
 	private  int Id;
 	private int invoiceId;
-	private String createdAt;
 
+	private  int orderId;
+	private String createdAt;
+	private String errorCode;
+
+	private int amount;
+	private String transactionId;
+	private String transactionContent;
 	private String refundId;
+	public PaymentTransaction(String errorCode, String transactionId, String transactionContent,
+							  int amount, String createdAt) {
+		super();
+		this.errorCode = errorCode;
+
+
+		this.transactionId = transactionId;
+		this.transactionContent = transactionContent;
+		this.amount = amount;
+		this.createdAt = createdAt;
+	}
 
 	public PaymentTransaction(int invoiceId, String createdAt, String refundId ){
 		this.invoiceId = invoiceId;
@@ -69,5 +83,6 @@ public class PaymentTransaction {
 			}
 		}
 	}
+
 
 }

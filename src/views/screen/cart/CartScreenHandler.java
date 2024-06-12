@@ -1,12 +1,5 @@
 package views.screen.cart;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import common.exception.MediaNotAvailableException;
 import common.exception.PlaceOrderException;
 import controller.PlaceOrderController;
@@ -25,6 +18,13 @@ import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.popup.PopupScreen;
 import views.screen.shipping.ShippingScreenHandler;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class CartScreenHandler extends BaseScreenHandler {
 
@@ -121,6 +121,13 @@ public class CartScreenHandler extends BaseScreenHandler {
 			ShippingScreenHandler ShippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
 			ShippingScreenHandler.setPreviousScreen(this);
 			ShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+			File file = new File("assets/images/Logo.png");
+			Image im = new Image(file.toURI().toString());
+			aimsImage.setImage(im);
+			// on mouse clicked, we back to home
+			aimsImage.setOnMouseClicked(e -> {
+				ShippingScreenHandler.getPreviousScreen().show();
+			});
 			ShippingScreenHandler.setScreenTitle("Shipping Screen");
 			ShippingScreenHandler.setBController(placeOrderController);
 			ShippingScreenHandler.show();

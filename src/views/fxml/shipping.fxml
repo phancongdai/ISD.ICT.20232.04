@@ -21,7 +21,7 @@
             <Font name="Segoe UI Bold" size="42.0" />
          </font>
       </Label>
-      <ImageView fx:id="aimsimage" fitHeight="73.0" fitWidth="73.0" layoutX="-6.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="aimsImage" fitHeight="73.0" fitWidth="73.0" layoutX="-6.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@../../../assets/images/Logo.png"/>
       </ImageView>
       <GridPane layoutX="170.0" layoutY="67.0" prefHeight="521.0" prefWidth="1027.0" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="169.0" AnchorPane.topAnchor="67.0">

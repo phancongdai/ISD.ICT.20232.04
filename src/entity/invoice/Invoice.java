@@ -72,7 +72,7 @@ public class Invoice {
         Connection connection = AIMSDB.getConnection();
         PreparedStatement preparedStatement = null;
         try {
-            String sql = "INSERT INTO `invoice` (orderId, amount, paypalId, status) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO `invoice` (orderId, amount, VNPayId, status) VALUES (?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(sql);
 
             // Giả sử getAmount() và getUrlPayOrder() trả về giá trị thích hợp
