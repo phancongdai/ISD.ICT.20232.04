@@ -1,5 +1,6 @@
 package entity.media;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -88,6 +89,28 @@ public class Media {
             medium.add(media);
         }
         return medium;
+    }
+
+    public List getMediaByType(String type) throws SQLException {
+        String sql = "select * from Media where type = ?";
+        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
+        stm.setString(1, type);
+        ResultSet res = stm.executeQuery();
+
+        ArrayList<Media> items = new ArrayList<>();
+        while (res.next()) {
+            Media media = new Media()
+                    .setId(res.getInt("id"))
+                    .setTitle(res.getString("title"))
+                    .setQuantity(res.getInt("quantity"))
+                    .setCategory(res.getString("category"))
+                    .setMediaURL(res.getString("imageUrl"))
+                    .setPrice(res.getInt("price"))
+                    .setType(res.getString("type"));
+            items.add(media);
+        }
+        System.out.println(items.size());
+        return items;
     }
 
     public void updateMediaFieldById(String tbname, int id, String field, Object value) throws SQLException {

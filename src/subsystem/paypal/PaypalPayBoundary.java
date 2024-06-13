@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 
-public class PaypalBoundary {
+public class PaypalPayBoundary {
 
     private String clientId = "AWLmNpASD_gPRrOncXOFnrp1qhX8dSqGfqQrTVrLJu2dTu75zkuXYmInv__TyVuqLT1Zkmfud7cFnCSk";
     private String secret = "EO4VV5_sJIQJlQa5GFQf63u-qc7BoU9V5HupcDu1n7mvmZLY6vD9-Pb3xElKLhcFFG7i94h9UhBMWEOf";
