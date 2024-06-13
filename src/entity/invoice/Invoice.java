@@ -101,7 +101,7 @@ public class Invoice {
             Invoice invoice = new Invoice();
             invoice.setId(res.getInt("id"));
             invoice.setAmount(res.getInt("amount"));
-            invoice.setPaypalId(res.getString("paypalId"));
+            invoice.setPaypalId(res.getString("VNPayId"));
             invoice.setStatus(res.getString("status"));
             invoices.add(invoice);
         }

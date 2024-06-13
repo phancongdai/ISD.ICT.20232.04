@@ -1,16 +1,15 @@
 package views.screen.payment;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import utils.Configs;
 import views.screen.BaseScreenHandler;
+import views.screen.home.HomeScreenHandler;
+
+import java.io.IOException;
 
 public class ResultScreenHandler extends BaseScreenHandler {
 
@@ -36,9 +35,13 @@ public class ResultScreenHandler extends BaseScreenHandler {
 	@FXML
 	private Label messageLabel;
 
+
+
 	@FXML
 	void confirmPayment(MouseEvent event) throws IOException {
+		setHomeScreenHandler(new HomeScreenHandler(this.stage, Configs.HOME_PATH));
 		homeScreenHandler.show();
+
 	}
 
 }
