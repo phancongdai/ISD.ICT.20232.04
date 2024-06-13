@@ -92,8 +92,8 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 			if(newValue.contains("http://127.0.0.1:50387/?")) {
 				response = new Response(newValue);
                 try {
-					System.out.println("check");
-                    BaseScreenHandler ResultScreenHandler = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, "Success", "Checkout");
+					//System.out.println("check");
+                    BaseScreenHandler ResultScreenHandler = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, "PAYMENT RESULT", "SUCESSFULL!");
 					ResultScreenHandler.setPreviousScreen(this);
 					//ResultScreenHandler.setHomeScreenHandler(homeScreenHandler);
 					ResultScreenHandler.setScreenTitle("Result");

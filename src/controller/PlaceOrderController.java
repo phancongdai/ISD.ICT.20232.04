@@ -55,7 +55,7 @@ public class PlaceOrderController extends BaseController{
     public Invoice createInvoice(Order order) throws SQLException {
         this.interbankInterface = new InterbankSubsystem();
         String id = this.interbankInterface.getUrlPayOrder(order.getAmount() + calculateShippingFee(order));
-        System.out.println(id);
+        //System.out.println(id);
         Invoice invoice = new Invoice(order, id);
         invoice.saveInvoice();
         return invoice;
