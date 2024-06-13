@@ -29,7 +29,8 @@ public class HomeController extends BaseController{
 
     public List getAllMedia() throws SQLException{
         // data coupling
-
+        new Media().updateMediaFieldById("Media", 38, "quantity", "69");
+        new Media().getMediaByType("book");
         return new Media().getAllMedia();
     }
     public List<Media> filterMediaByKeyWord(String keyword, List<Media> items) {

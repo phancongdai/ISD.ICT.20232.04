@@ -109,16 +109,19 @@ public class Media {
                     .setType(res.getString("type"));
             items.add(media);
         }
-        System.out.println(items.size());
+        for (Media media : items) {
+            System.out.println(media.quantity);
+        }
         return items;
     }
 
-    public void updateMediaFieldById(String tbname, int id, String field, Object value) throws SQLException {
+    public void updateMediaFieldById(String tableName, int id, String field, Object value) throws SQLException {
         Statement stm = AIMSDB.getConnection().createStatement();
         if (value instanceof String){
             value = "\"" + value + "\"";
         }
-        stm.executeUpdate(" update " + tbname + " set" + " " 
+
+        stm.executeUpdate(" update " + tableName + " set" + " "
                           + field + "=" + value + " " 
                           + "where id=" + id + ";");
     }

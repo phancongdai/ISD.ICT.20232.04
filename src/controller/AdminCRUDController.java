@@ -21,4 +21,8 @@ public class AdminCRUDController extends BaseController {
     public List getAllDvds() throws SQLException {
         return media.getMediaByType("dvd");
     }
+
+    public void changeQuantity(int id, int quantity) throws SQLException {
+        media.updateMediaFieldById("Media", id, "quantity", quantity);
+    }
 }
