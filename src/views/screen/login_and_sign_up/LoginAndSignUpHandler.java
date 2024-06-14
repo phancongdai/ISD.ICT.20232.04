@@ -77,7 +77,7 @@ public class LoginAndSignUpHandler implements Initializable {
     private PreparedStatement prepare;
     private ResultSet result;
     private Statement statement;
-    private Stage stage;
+
 
     public void login() {
         alertMessage alert = new alertMessage();
@@ -86,7 +86,7 @@ public class LoginAndSignUpHandler implements Initializable {
         if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
             alert.errorMessage("Incorrect Username/Password");
         } else {
-            String selectData = "SELECT name,password FROM User WHERE"
+            String selectData = "SELECT name,password FROM User WHERE "
                     + "name = ? and password = ?";
             connect = AIMSDB.getConnection();
             try {
@@ -98,14 +98,14 @@ public class LoginAndSignUpHandler implements Initializable {
                 if(result.next()){
                     //Nhập đúng sẽ chuyển sang màn hình chính luôn
                     alert.successMessage("Successfully Login");
-                    HomeScreenHandler homeHandler = new HomeScreenHandler(this.stage, Configs.HOME_PATH);
+                Stage stage = (Stage) login_btn.getScene().getWindow();
+                    HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
 //					HomeScreenHandler._instance = homeHandler;
                     homeHandler.setScreenTitle("Home Screen");
                     homeHandler.setImage();
                     homeHandler.show();
-
                 }else{
-                    //Báo lỗi in ra màn hình là tài khoản hoặc mật khẩu bị sai!!
+//                    //Báo lỗi in ra màn hình là tài khoản hoặc mật khẩu bị sai!!
                     alert.errorMessage("Incorrect Username/Password");
                 }
             } catch (Exception ex) {
@@ -139,9 +139,7 @@ public class LoginAndSignUpHandler implements Initializable {
                 if (result.next()) {
                     alert.errorMessage(signup_username.getText() + " is already existed !");
                 } else {
-                    String insertData = "INSERT INTO User"
-                            + "(email,name,password)"
-                            + "VALUES(?,?,?)";
+                    String insertData = "INSERT INTO User (email, name, password) VALUES (?, ?, ?)";
                     prepare = connect.prepareStatement(insertData);
                     prepare.setString(1, signup_email.getText());
                     prepare.setString(2, signup_username.getText());
