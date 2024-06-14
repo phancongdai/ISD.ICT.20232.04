@@ -1,5 +1,6 @@
 package views.screen.login_and_sign_up;
 
+import entity.db.AIMSDB;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import java.net.URL;
@@ -78,22 +79,6 @@ public class LoginAndSignUpHandler implements Initializable {
     private Statement statement;
     private Stage stage;
 
-    public static Connection connectToSQLite() {
-        Connection connection = null;
-        try {
-            // Đường dẫn đến file cơ sở dữ liệu SQLite
-            String url = "jdbc:sqlite:assets/db/aims.db"; // Thay thế "your-database-file.db" bằng tên file cơ sở dữ liệu của bạn
-
-            // Kết nối đến cơ sở dữ liệu
-            connection = DriverManager.getConnection(url);
-            System.out.println("Connected to SQLite database successfully!");
-        } catch (SQLException e) {
-            System.out.println("Connection to SQLite database failed!");
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
     public void login() {
         alertMessage alert = new alertMessage();
 
@@ -103,7 +88,7 @@ public class LoginAndSignUpHandler implements Initializable {
         } else {
             String selectData = "SELECT name,password FROM User WHERE"
                     + "name = ? and password = ?";
-            connect = connectToSQLite();
+            connect = AIMSDB.getConnection();
             try {
                 prepare = connect.prepareStatement(selectData);
                 prepare.setString(1, login_username.getText());
@@ -113,7 +98,7 @@ public class LoginAndSignUpHandler implements Initializable {
                 if(result.next()){
                     //Nhập đúng sẽ chuyển sang màn hình chính luôn
                     alert.successMessage("Successfully Login");
-                    HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+                    HomeScreenHandler homeHandler = new HomeScreenHandler(this.stage, Configs.HOME_PATH);
 //					HomeScreenHandler._instance = homeHandler;
                     homeHandler.setScreenTitle("Home Screen");
                     homeHandler.setImage();
@@ -144,7 +129,7 @@ public class LoginAndSignUpHandler implements Initializable {
         else if (signup_password.getText().length() < 8) {
             alert.errorMessage("Invalid Password, at least 8 characters or more !");
         } else {
-            connect = connectToSQLite();
+            connect = AIMSDB.getConnection();
             try {
                 //Kiểm tra xem nếu tài khoản đã tồn tại rồi !
                 String checkUsername = "SELECT * FROM User WHERE name = '"
