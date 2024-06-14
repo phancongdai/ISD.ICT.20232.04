@@ -3,6 +3,8 @@ package views.screen.login_and_sign_up;
 import entity.db.AIMSDB;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -79,39 +81,48 @@ public class LoginAndSignUpHandler implements Initializable {
     private Statement statement;
 
 
-    public void login() {
+    public void login() throws IOException {
         alertMessage alert = new alertMessage();
 
-        //Kiểm tra xem tên đăng nhập hoặc mật khẩu có bị thiếu hay k
-        if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
-            alert.errorMessage("Incorrect Username/Password");
-        } else {
-            String selectData = "SELECT name,password FROM User WHERE "
-                    + "name = ? and password = ?";
-            connect = AIMSDB.getConnection();
-            try {
-                prepare = connect.prepareStatement(selectData);
-                prepare.setString(1, login_username.getText());
-                prepare.setString(2, login_password.getText());
-
-                result = prepare.executeQuery();
-                if(result.next()){
-                    //Nhập đúng sẽ chuyển sang màn hình chính luôn
-                    alert.successMessage("Successfully Login");
-                Stage stage = (Stage) login_btn.getScene().getWindow();
-                    HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+        Stage stage = (Stage) login_btn.getScene().getWindow();
+        HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
 //					HomeScreenHandler._instance = homeHandler;
-                    homeHandler.setScreenTitle("Home Screen");
-                    homeHandler.setImage();
-                    homeHandler.show();
-                }else{
-//                    //Báo lỗi in ra màn hình là tài khoản hoặc mật khẩu bị sai!!
-                    alert.errorMessage("Incorrect Username/Password");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        homeHandler.setScreenTitle("Home Screen");
+        homeHandler.setImage();
+        homeHandler.show();
+
+        return;
+
+//        //Kiểm tra xem tên đăng nhập hoặc mật khẩu có bị thiếu hay k
+//        if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
+//            alert.errorMessage("Incorrect Username/Password");
+//        } else {
+//            String selectData = "SELECT name,password FROM User WHERE "
+//                    + "name = ? and password = ?";
+//            connect = AIMSDB.getConnection();
+//            try {
+//                prepare = connect.prepareStatement(selectData);
+//                prepare.setString(1, login_username.getText());
+//                prepare.setString(2, login_password.getText());
+//
+//                result = prepare.executeQuery();
+//                if(result.next()){
+//                    //Nhập đúng sẽ chuyển sang màn hình chính luôn
+//                    alert.successMessage("Successfully Login");
+//                Stage stage = (Stage) login_btn.getScene().getWindow();
+//                    HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+////					HomeScreenHandler._instance = homeHandler;
+//                    homeHandler.setScreenTitle("Home Screen");
+//                    homeHandler.setImage();
+//                    homeHandler.show();
+//                }else{
+////                    //Báo lỗi in ra màn hình là tài khoản hoặc mật khẩu bị sai!!
+//                    alert.errorMessage("Incorrect Username/Password");
+//                }
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
     }
 
     public void register() {
