@@ -18,7 +18,7 @@ public class PaypalSystemController {
 
     private static final String PAY_COMMAND = "pay";
     private static final String VERSION = "1.0.0";
-    private PaypalBoundary paypalBoundary = new PaypalBoundary();
+    private PaypalPayBoundary paypalBoundary = new PaypalPayBoundary();
 
     public PaymentTransaction payOrder(Invoice invoice, String contents) throws IOException, SQLException {
 

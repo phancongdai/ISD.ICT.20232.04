@@ -6,6 +6,7 @@ import java.util.List;
 
 import entity.cart.Cart;
 import entity.media.Media;
+import entity.user.User;
 import views.screen.home.MediaHandler;
 //funtional cohesion
 public class HomeController extends BaseController{
@@ -25,8 +26,11 @@ public class HomeController extends BaseController{
      * @return List[Media]
      * @throws SQLException
      */
+
     public List getAllMedia() throws SQLException{
         // data coupling
+        new Media().updateMediaFieldById("Media", 38, "quantity", "69");
+        new Media().getMediaByType("book");
         return new Media().getAllMedia();
     }
     public List<Media> filterMediaByKeyWord(String keyword, List<Media> items) {

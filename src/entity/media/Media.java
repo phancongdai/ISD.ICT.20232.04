@@ -1,5 +1,6 @@
 package entity.media;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -90,12 +91,37 @@ public class Media {
         return medium;
     }
 
-    public void updateMediaFieldById(String tbname, int id, String field, Object value) throws SQLException {
+    public List getMediaByType(String type) throws SQLException {
+        String sql = "select * from Media where type = ?";
+        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
+        stm.setString(1, type);
+        ResultSet res = stm.executeQuery();
+
+        ArrayList<Media> items = new ArrayList<>();
+        while (res.next()) {
+            Media media = new Media()
+                    .setId(res.getInt("id"))
+                    .setTitle(res.getString("title"))
+                    .setQuantity(res.getInt("quantity"))
+                    .setCategory(res.getString("category"))
+                    .setMediaURL(res.getString("imageUrl"))
+                    .setPrice(res.getInt("price"))
+                    .setType(res.getString("type"));
+            items.add(media);
+        }
+        for (Media media : items) {
+            System.out.println(media.quantity);
+        }
+        return items;
+    }
+
+    public void updateMediaFieldById(String tableName, int id, String field, Object value) throws SQLException {
         Statement stm = AIMSDB.getConnection().createStatement();
         if (value instanceof String){
             value = "\"" + value + "\"";
         }
-        stm.executeUpdate(" update " + tbname + " set" + " " 
+
+        stm.executeUpdate(" update " + tableName + " set" + " "
                           + field + "=" + value + " " 
                           + "where id=" + id + ";");
     }

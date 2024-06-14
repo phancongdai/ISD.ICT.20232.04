@@ -145,12 +145,13 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             e.printStackTrace();
         }
 
-
+        // Home button
         aimsImage.setOnMouseClicked(e -> {
             List<MediaHandler> displayedItems = updateMediaDisplay(this.homeItems);
             addMediaHome(displayedItems);
         });
 
+        // Cart button
         cartImage.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
             try {
@@ -164,6 +165,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             }
         });
 
+        // Invoice button
         invoiceList.setOnMouseClicked(e -> {
             InvoiceListHandler invoiceListHandler;
             try {
@@ -218,12 +220,15 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     }
 
     public void addMenuItem(int position, String text, MenuButton menuButton){
+        // Create a menu item
         MenuItem menuItem = new MenuItem();
         Label label = new Label();
         label.prefWidthProperty().bind(menuButton.widthProperty().subtract(31));
         label.setText(text);
         label.setTextAlignment(TextAlignment.RIGHT);
         menuItem.setGraphic(label);
+
+        // Set action
         menuItem.setOnAction(e -> {
             // empty home media
             hboxMedia.getChildren().forEach(node -> {
@@ -265,6 +270,8 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             });
             checkEmpty(filteredItems);
         });
+
+        // Add to button
         menuButton.getItems().add(position, menuItem);
     }
 

@@ -1,5 +1,5 @@
 -- Creator:       MySQL Workbench 8.0.21/ExportSQLite Plugin 0.1.0
--- Author:        nguyenlm
+-- Author:        nguyennhudai
 -- Caption:       New Model
 -- Project:       Name of the project
 -- Changed:       2020-11-07 23:28
@@ -47,7 +47,8 @@ CREATE TABLE "aims"."User"(
   "name" VARCHAR(45) NOT NULL,
   "email" VARCHAR(45) NOT NULL,
   "address" VARCHAR(45) NOT NULL,
-  "phone" VARCHAR(45) NOT NULL
+  "phone" VARCHAR(45) NOT NULL,
+  "PASSWORD" VARCHAR(45) NOT NULL
 );
 CREATE TABLE "aims"."DVD"(
   "id" INTEGER PRIMARY KEY NOT NULL,
