@@ -15,7 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utils.Configs;
-import views.screen.home.HomeScreenHandler;
+import views.screen.home_admin.HomeScreenHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,7 +83,7 @@ public class AuthenticalHandler implements Initializable {
         alertMessage alert = new alertMessage();
 
         Stage stage = (Stage) login_btn.getScene().getWindow();
-        HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+        HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_ADMIN_PATH);
 //					HomeScreenHandler._instance = homeHandler;
         homeHandler.setScreenTitle("Home Screen");
         homeHandler.setImage();

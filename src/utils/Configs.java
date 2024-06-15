@@ -50,6 +50,8 @@ public class Configs {
 	public static final String SHIPPING_SCREEN_PATH = "/views/fxml/shipping.fxml";
 	public static final String CART_MEDIA_PATH = "/views/fxml/media_cart.fxml";
 	public static final String HOME_PATH  = "/views/fxml/home.fxml";
+	public static final String HOME_ADMIN_PATH = "/views/fxml/home_admin.fxml";
+	public static final String HOME_MEDIA_ADMIN_PATH = "/views/fxml/media_home_admin.fxml";
 	public static final String HOME_MEDIA_PATH = "/views/fxml/media_home.fxml";
 	public static final String POPUP_PATH = "/views/fxml/popup.fxml";
 	public static final String INVOICE_LIST_PATH = "/views/fxml/invoice_list.fxml";
