@@ -25,4 +25,8 @@ public class AdminCRUDController extends BaseController {
     public void changeQuantity(int id, int quantity) throws SQLException {
         media.updateMediaFieldById("Media", id, "quantity", quantity);
     }
+
+    public void addNewMedia() throws SQLException {
+
+    }
 }
