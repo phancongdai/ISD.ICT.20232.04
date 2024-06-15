@@ -2,6 +2,7 @@ package views.screen.home_admin;
 
 import controller.HomeController;
 import entity.cart.Cart;
+import entity.db.AIMSDB;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,10 +18,14 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.popup.PopupScreen;
+import javafx.event.ActionEvent;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -60,7 +65,8 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     private List homeItems;
 
     private List displayedItems;
-
+    private Connection connect;
+    private PreparedStatement prepare;
     public static HomeScreenHandler _instance;
 
     public HomeScreenHandler(Stage stage, String screenPath) throws IOException {
@@ -95,6 +101,125 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             addMediaHome(displayedItems);
         }
     }
+
+    //Hàm này được dùng để thêm item
+    @FXML
+    private void handleAddItem(ActionEvent event) {
+        // Logic xử lý khi nút addItemBtn được nhấn
+        // Nhập tiêu đề (title)
+        TextInputDialog titleDialog = new TextInputDialog();
+        titleDialog.setTitle("Add New Item");
+        titleDialog.setHeaderText("Enter the title for the new media item:");
+        titleDialog.setContentText("Title:");
+
+        Optional<String> titleResult = titleDialog.showAndWait();
+        if (!titleResult.isPresent() || titleResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        String title = titleResult.get();
+
+        // Nhập danh mục (category)
+        TextInputDialog categoryDialog = new TextInputDialog();
+        categoryDialog.setTitle("Add New Item");
+        categoryDialog.setHeaderText("Enter the category for the new media item:");
+        categoryDialog.setContentText("Category:");
+
+        Optional<String> categoryResult = categoryDialog.showAndWait();
+        if (!categoryResult.isPresent() || categoryResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        String category = categoryResult.get();
+
+        // Nhập giá trị (value)
+        TextInputDialog valueDialog = new TextInputDialog();
+        valueDialog.setTitle("Add New Item");
+        valueDialog.setHeaderText("Enter the value for the new media item:");
+        valueDialog.setContentText("Value:");
+
+        Optional<String> valueResult = valueDialog.showAndWait();
+        if (!valueResult.isPresent() || valueResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        int value;
+        try {
+            value = Integer.parseInt(valueResult.get());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid input for value: " + e.getMessage());
+            return;
+        }
+
+        // Nhập giá (price)
+        TextInputDialog priceDialog = new TextInputDialog();
+        priceDialog.setTitle("Add New Item");
+        priceDialog.setHeaderText("Enter the price for the new media item:");
+        priceDialog.setContentText("Price:");
+
+        Optional<String> priceResult = priceDialog.showAndWait();
+        if (!priceResult.isPresent() || priceResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        int price;
+        try {
+            price = Integer.parseInt(priceResult.get());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid input for price: " + e.getMessage());
+            return;
+        }
+
+        // Nhập số lượng (quantity)
+        TextInputDialog quantityDialog = new TextInputDialog();
+        quantityDialog.setTitle("Add New Item");
+        quantityDialog.setHeaderText("Enter the quantity for the new media item:");
+        quantityDialog.setContentText("Quantity:");
+
+        Optional<String> quantityResult = quantityDialog.showAndWait();
+        if (!quantityResult.isPresent() || quantityResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        int quantity;
+        try {
+            quantity = Integer.parseInt(quantityResult.get());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid input for quantity: " + e.getMessage());
+            return;
+        }
+
+        // Nhập loại (type)
+        TextInputDialog typeDialog = new TextInputDialog();
+        typeDialog.setTitle("Add New Item");
+        typeDialog.setHeaderText("Enter the type for the new media item:");
+        typeDialog.setContentText("Type:");
+
+        Optional<String> typeResult = typeDialog.showAndWait();
+        if (!typeResult.isPresent() || typeResult.get().isEmpty()) {
+            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
+        }
+        String type = typeResult.get();
+        // Sau khi lấy được các thông tin cần thiết, bạn có thể thêm item mới vào cơ sở dữ liệu
+        int response = JOptionPane.showConfirmDialog(null, "Do you want to add a new item?", "Confirm Update",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION){
+            String sql = "INSERT INTO media (title, category, value, price, quantity, type,imageUrl)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, assets/images/book/book2.jpg)";
+            connect = AIMSDB.getConnection();
+            try {
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, title);
+                prepare.setString(2, category);
+                prepare.setInt(3, value);
+                prepare.setDouble(4, price);
+                prepare.setInt(5, quantity);
+                prepare.setString(6, type);
+                prepare.executeUpdate();
+                refreshMediaList();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
+
 
     private List<MediaAdminHandler> updateMediaDisplay( List Items) {
         int startIndex = currentPage * itemsPerPage;

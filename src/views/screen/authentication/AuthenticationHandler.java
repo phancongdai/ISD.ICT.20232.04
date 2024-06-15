@@ -1,4 +1,4 @@
-package views.screen.login_and_sign_up;
+package views.screen.authentication;
 
 import entity.db.AIMSDB;
 import javafx.event.ActionEvent;
@@ -23,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 
-public class AuthenticalHandler implements Initializable {
+public class AuthenticationHandler implements Initializable {
 
     /**
      * Initializes the controller class.

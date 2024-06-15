@@ -145,6 +145,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (response == JOptionPane.YES_OPTION) {
+            //Xóa 2 dòng dưới nếu cập nhật thành công trong database nhé
             mediaPrice.setText(priceResult.get() );
             mediaAvail.setText(availResult.get());
 //            connect = AIMSDB.getConnection();
@@ -155,6 +156,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
 //            prepare.setString(2,mediaAvail.getText());
 //            prepare.setInt(3,media.getId());
 //            prepare.executeUpdate();
+//            home.refreshMediaList();
         }
         else{
             return;
