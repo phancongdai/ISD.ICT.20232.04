@@ -60,7 +60,11 @@
                 </HBox>
                 <VBox prefHeight="102.0" prefWidth="161.0">
                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="addItemBtn" layoutX="48.0" layoutY="14.0" mnemonicParsing="false" text="Add Item" />
+                        <Button fx:id="manageInvoiceBtn" layoutX="20.0" layoutY="63.0" mnemonicParsing="false" text="Manage Invoice List" />
+                     </children></Pane>
                     </children>
                 </VBox>
             </children>
