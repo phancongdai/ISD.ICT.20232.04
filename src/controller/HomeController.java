@@ -8,7 +8,6 @@ import entity.cart.Cart;
 import entity.media.Media;
 import entity.user.User;
 import views.screen.home.MediaHandler;
-//funtional cohesion
 public class HomeController extends BaseController{
 
     /** Phương thức này lấy tất cả các đối tượng Media từ cơ sở dữ liệu và trả về chúng.
@@ -27,10 +26,8 @@ public class HomeController extends BaseController{
      * @throws SQLException
      */
 
-    public List getAllMedia() throws SQLException{
+    public List<Media> getAllMedia() throws SQLException{
         // data coupling
-        new Media().updateMediaFieldById("Media", 38, "quantity", "69");
-        new Media().getMediaByType("book");
         return new Media().getAllMedia();
     }
     public List<Media> filterMediaByKeyWord(String keyword, List<Media> items) {
