@@ -18,7 +18,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utils.Configs;
-import views.screen.home_admin.HomeScreenHandler;
+import views.screen.home.HomeScreenHandler;
+import views.screen.home_admin.AdminHomeScreenHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,7 +84,7 @@ public class AuthenticationHandler implements Initializable {
     private LoginController loginController;
 
     public void login() throws IOException {
-        if (loginController != null) loginController = new LoginController();
+        if (loginController == null) loginController = new LoginController();
 
         alertMessage alert = new alertMessage();
         if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
@@ -94,18 +95,22 @@ public class AuthenticationHandler implements Initializable {
                 if (user == null) {
                     alert.errorMessage("Incorrect Username/Password");
                 } else {
+                    Stage stage = (Stage) login_btn.getScene().getWindow();
                     if (user.getId() != 0) {
-                        Stage stage = (Stage) login_btn.getScene().getWindow();
                         HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
                         homeHandler.setScreenTitle("Home Screen");
                         homeHandler.setImage();
                         homeHandler.show();
                     } else {
-                        //TODO: Move to admin home screen
+                        AdminHomeScreenHandler homeHandler = new AdminHomeScreenHandler(stage, Configs.HOME_ADMIN_PATH);
+                        homeHandler.setScreenTitle("Home Screen");
+                        homeHandler.setImage();
+                        homeHandler.show();
                     }
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }

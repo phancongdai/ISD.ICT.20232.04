@@ -130,7 +130,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        System.out.println("Initialized");
         setBController(new HomeController());
         try{
             List<Media> medium = getBController().getAllMedia();

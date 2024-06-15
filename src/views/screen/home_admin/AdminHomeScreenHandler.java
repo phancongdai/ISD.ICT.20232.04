@@ -1,7 +1,6 @@
 package views.screen.home_admin;
 
 import controller.HomeController;
-import entity.cart.Cart;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,9 +24,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class HomeScreenHandler extends BaseScreenHandler implements Initializable {
+public class AdminHomeScreenHandler extends BaseScreenHandler implements Initializable {
 
-    public static Logger LOGGER = Utils.getLogger(HomeScreenHandler.class.getName());
+    public static Logger LOGGER = Utils.getLogger(AdminHomeScreenHandler.class.getName());
 
     @FXML
     private ImageView aimsImage;
@@ -61,12 +60,11 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     private List displayedItems;
 
-    public static HomeScreenHandler _instance;
+    public static AdminHomeScreenHandler _instance;
 
-    public HomeScreenHandler(Stage stage, String screenPath) throws IOException {
+    public AdminHomeScreenHandler(Stage stage, String screenPath) throws IOException {
         super(stage, screenPath);
     }
-
 
     public HomeController getBController() {
         return (HomeController) super.getBController();
@@ -275,6 +273,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         }
         return filteredItems;
     }
+
     public List<MediaAdminHandler> convertMediaHandlerList(List<Media> items) throws SQLException, IOException {
         List<MediaAdminHandler> mediaHandlerList = new ArrayList<>();
         for (Object item : items) {
