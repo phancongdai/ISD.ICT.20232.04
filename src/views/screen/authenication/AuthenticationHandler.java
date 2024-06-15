@@ -1,12 +1,15 @@
-package views.screen.login_and_sign_up;
+package views.screen.authenication;
 
+import controller.LoginController;
 import entity.db.AIMSDB;
+import entity.user.User;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,17 +18,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utils.Configs;
-import views.screen.home.HomeScreenHandler;
+import views.screen.home_admin.HomeScreenHandler;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class LoginAndSignUpHandler implements Initializable {
+public class AuthenticationHandler implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -75,54 +76,38 @@ public class LoginAndSignUpHandler implements Initializable {
     @FXML
     private TextField signup_username;
 
-    private Connection connect;
     private PreparedStatement prepare;
     private ResultSet result;
     private Statement statement;
 
+    private LoginController loginController;
 
     public void login() throws IOException {
+        if (loginController != null) loginController = new LoginController();
+
         alertMessage alert = new alertMessage();
-
-        Stage stage = (Stage) login_btn.getScene().getWindow();
-        HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
-//					HomeScreenHandler._instance = homeHandler;
-        homeHandler.setScreenTitle("Home Screen");
-        homeHandler.setImage();
-        homeHandler.show();
-
-        return;
-
-//        //Kiểm tra xem tên đăng nhập hoặc mật khẩu có bị thiếu hay k
-//        if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
-//            alert.errorMessage("Incorrect Username/Password");
-//        } else {
-//            String selectData = "SELECT name,password FROM User WHERE "
-//                    + "name = ? and password = ?";
-//            connect = AIMSDB.getConnection();
-//            try {
-//                prepare = connect.prepareStatement(selectData);
-//                prepare.setString(1, login_username.getText());
-//                prepare.setString(2, login_password.getText());
-//
-//                result = prepare.executeQuery();
-//                if(result.next()){
-//                    //Nhập đúng sẽ chuyển sang màn hình chính luôn
-//                    alert.successMessage("Successfully Login");
-//                Stage stage = (Stage) login_btn.getScene().getWindow();
-//                    HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
-////					HomeScreenHandler._instance = homeHandler;
-//                    homeHandler.setScreenTitle("Home Screen");
-//                    homeHandler.setImage();
-//                    homeHandler.show();
-//                }else{
-////                    //Báo lỗi in ra màn hình là tài khoản hoặc mật khẩu bị sai!!
-//                    alert.errorMessage("Incorrect Username/Password");
-//                }
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
+        if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
+            alert.errorMessage("Username and Password are Required");
+        } else {
+            try {
+                User user = loginController.loginWithUsernameAndPassword(login_username.getText(), login_password.getText());
+                if (user == null) {
+                    alert.errorMessage("Incorrect Username/Password");
+                } else {
+                    if (user.getId() != 0) {
+                        Stage stage = (Stage) login_btn.getScene().getWindow();
+                        HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+                        homeHandler.setScreenTitle("Home Screen");
+                        homeHandler.setImage();
+                        homeHandler.show();
+                    } else {
+                        //TODO: Move to admin home screen
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public void register() {
@@ -140,7 +125,7 @@ public class LoginAndSignUpHandler implements Initializable {
         else if (signup_password.getText().length() < 8) {
             alert.errorMessage("Invalid Password, at least 8 characters or more !");
         } else {
-            connect = AIMSDB.getConnection();
+            Connection connect = AIMSDB.getConnection();
             try {
                 //Kiểm tra xem nếu tài khoản đã tồn tại rồi !
                 String checkUsername = "SELECT * FROM User WHERE name = '"
@@ -190,19 +175,19 @@ public class LoginAndSignUpHandler implements Initializable {
         }
     }
 
-    public void showPassword(){
-        if(login_selectshowPassword.isSelected()){
+    public void showPassword() {
+        if (login_selectshowPassword.isSelected()) {
             login_showPassword.setText(login_password.getText());
             login_showPassword.setVisible(true);
             login_password.setVisible(false);
-        }else{
+        } else {
             login_password.setText(login_showPassword.getText());
             login_showPassword.setVisible(false);
             login_password.setVisible(true);
         }
     }
 
-    public void openApp(){
+    public void openApp() {
         login_form.setVisible(true);
         signup_form.setVisible(false);
     }

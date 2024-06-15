@@ -1,7 +1,7 @@
 package controller;
 
 import entity.user.User;
-import views.screen.login_and_sign_up.alertMessage;
+import views.screen.authenication.alertMessage;
 
 import java.sql.SQLException;
 

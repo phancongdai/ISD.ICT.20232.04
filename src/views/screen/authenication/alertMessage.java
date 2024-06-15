@@ -1,4 +1,4 @@
-package views.screen.login_and_sign_up;
+package views.screen.authenication;
 
 import javafx.scene.control.Alert;
 
