@@ -18,14 +18,12 @@ import utils.Configs;
 import views.screen.home.HomeScreenHandler;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class LoginAndSignUpHandler implements Initializable {
+public class AuthenticalHandler implements Initializable {
 
     /**
      * Initializes the controller class.
