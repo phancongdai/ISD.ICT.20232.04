@@ -33,4 +33,7 @@ public class AdminCRUDController extends BaseController {
     public void deleteMedia(int id) throws SQLException {
         media.deleteMediaById(id);
     }
+
+    public void approveInvoice(Boolean approved) throws SQLException {
+    }
 }

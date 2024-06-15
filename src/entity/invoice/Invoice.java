@@ -93,6 +93,19 @@ public class Invoice {
         }
     }
 
+    public static void updateInvoiceStatus(int id, Boolean approved) throws SQLException{
+        String status = "";
+        if (approved) status = "APPROVED";
+        else status = "REJECTED";
+        String sql = "UPDATE Invoice SET status = ? WHERE id = ?";
+        Connection conn = AIMSDB.getConnection();
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, status);
+        preparedStatement.setInt(2, id);
+
+        preparedStatement.executeUpdate();
+    }
+
     public static ArrayList<Invoice> getListInvoice() throws SQLException {
         Statement stm = AIMSDB.getConnection().createStatement();
         ResultSet res = stm.executeQuery("SELECT * from Invoice");
