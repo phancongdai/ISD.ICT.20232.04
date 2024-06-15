@@ -7,19 +7,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import entity.db.AIMSDB;
-import utils.Utils;
 
 /**
  * The general media class, for another media it can be done by inheriting this class
- * @author nguyenlm
+ * @author nguyendai
  */
 public class Media {
-
-    private static Logger LOGGER = Utils.getLogger(Media.class.getName());
-
     protected Statement stm;
     protected int id;
     protected String title;
@@ -32,8 +27,6 @@ public class Media {
 
     protected  boolean isSupportedPlaceRushOrder = new Random().nextBoolean();
 
-    protected double weigh = (new Random().nextDouble() * 0.9) + 0.1;
-
     public Media() throws SQLException{
         stm = AIMSDB.getConnection().createStatement();
     }
@@ -45,8 +38,6 @@ public class Media {
         this.price = price;
         this.quantity = quantity;
         this.type = type;
-
-        //stm = AIMSDB.getConnection().createStatement();
     }
 
     public int getQuantity() throws SQLException{
@@ -56,11 +47,10 @@ public class Media {
     }
 
     public Media getMediaById(int id) throws SQLException{
-        String sql = "SELECT * FROM Media ;";
+        String sql = "SELECT * FROM Media";
         Statement stm = AIMSDB.getConnection().createStatement();
         ResultSet res = stm.executeQuery(sql);
 		if(res.next()) {
-
             return new Media()
                 .setId(res.getInt("id"))
                 .setTitle(res.getString("title"))
@@ -73,42 +63,19 @@ public class Media {
         return null;
     }
 
-    public List getAllMedia() throws SQLException{
+    public List<Media> getAllMedia() throws SQLException{
         Statement stm = AIMSDB.getConnection().createStatement();
         ResultSet res = stm.executeQuery("select * from Media");
-        ArrayList medium = new ArrayList<>();
-        while (res.next()) {
-            Media media = new Media()
-                .setId(res.getInt("id"))
-                .setTitle(res.getString("title"))
-                .setQuantity(res.getInt("quantity"))
-                .setCategory(res.getString("category"))
-                .setMediaURL(res.getString("imageUrl"))
-                .setPrice(res.getInt("price"))
-                .setType(res.getString("type"));
-            medium.add(media);
-        }
-        return medium;
+        return _extractMediaFromResultSet(res);
     }
 
-    public List getMediaByType(String type) throws SQLException {
+    public List<Media> getMediaByType(String type) throws SQLException {
         String sql = "select * from Media where type = ?";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
         stm.setString(1, type);
         ResultSet res = stm.executeQuery();
 
-        ArrayList<Media> items = new ArrayList<>();
-        while (res.next()) {
-            Media media = new Media()
-                    .setId(res.getInt("id"))
-                    .setTitle(res.getString("title"))
-                    .setQuantity(res.getInt("quantity"))
-                    .setCategory(res.getString("category"))
-                    .setMediaURL(res.getString("imageUrl"))
-                    .setPrice(res.getInt("price"))
-                    .setType(res.getString("type"));
-            items.add(media);
-        }
+        ArrayList<Media> items = _extractMediaFromResultSet(res);
         for (Media media : items) {
             System.out.println(media.quantity);
         }
@@ -121,9 +88,46 @@ public class Media {
             value = "\"" + value + "\"";
         }
 
-        stm.executeUpdate(" update " + tableName + " set" + " "
-                          + field + "=" + value + " " 
-                          + "where id=" + id + ";");
+        stm.executeUpdate(" update " + tableName + " set " + field + "=" + value + " where id=" + id);
+    }
+
+    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
+        String sql = "insert into Media (title, type, category, imageUrl, price, quantity, value) values (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
+        stm.setString(1, title);
+        stm.setString(2, type);
+        stm.setString(3, category);
+        stm.setString(4, imgUrl);
+        stm.setDouble(5, price);
+        stm.setInt(6, quantity);
+        stm.setInt(7, 1);
+
+        stm.executeUpdate();
+    }
+
+    public void deleteMediaById(int id) throws SQLException {
+        String sql = "delete from Media where id = ?";
+        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
+        stm.setInt(1, id);
+
+        stm.executeUpdate();
+    }
+
+    private ArrayList<Media> _extractMediaFromResultSet(ResultSet res) throws SQLException {
+        ArrayList<Media> items = new ArrayList<>();
+        while (res.next()) {
+            Media media = new Media()
+                    .setId(res.getInt("id"))
+                    .setTitle(res.getString("title"))
+                    .setQuantity(res.getInt("quantity"))
+                    .setCategory(res.getString("category"))
+                    .setMediaURL(res.getString("imageUrl"))
+                    .setPrice(res.getInt("price"))
+                    .setType(res.getString("type"));
+            items.add(media);
+        }
+
+        return items;
     }
 
     // getter and setter 
@@ -191,12 +195,6 @@ public class Media {
     }
 
     public  void setIsSupportedPlaceRushOrder(boolean b) { this.isSupportedPlaceRushOrder = b; }
-
-    public double getWeigh(){ return  this.weigh;}
-
-    public void setWeigh(double weigh) {
-        this.weigh = weigh;
-    }
 
     @Override
     public String toString() {

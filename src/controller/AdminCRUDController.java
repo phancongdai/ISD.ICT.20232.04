@@ -10,15 +10,15 @@ public class AdminCRUDController extends BaseController {
 
     public AdminCRUDController() throws SQLException {}
 
-    public List getAllBooks() throws SQLException {
+    public List<Media> getAllBooks() throws SQLException {
         return media.getMediaByType("book");
     }
 
-    public List getAllCDs() throws SQLException {
+    public List<Media> getAllCDs() throws SQLException {
         return media.getMediaByType("cd");
     }
 
-    public List getAllDvds() throws SQLException {
+    public List<Media> getAllDvds() throws SQLException {
         return media.getMediaByType("dvd");
     }
 
@@ -26,7 +26,11 @@ public class AdminCRUDController extends BaseController {
         media.updateMediaFieldById("Media", id, "quantity", quantity);
     }
 
-    public void addNewMedia() throws SQLException {
+    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
+        media.addNewMedia(title, type, category, imgUrl, price, quantity);
+    }
 
+    public void deleteMedia(int id) throws SQLException {
+        media.deleteMediaById(id);
     }
 }
