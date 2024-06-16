@@ -1,8 +1,6 @@
 package views.screen.invoicelist;
 
-import common.exception.PaymentException;
 import controller.InvoiceListController;
-import controller.PaymentController;
 import entity.invoice.Invoice;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,16 +10,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import subsystem.InterbankSubsystem;
-import utils.Configs;
 import views.screen.BaseScreenAdminHandler;
-import views.screen.home.HomeScreenHandler;
-import views.screen.invoice.InvoiceDetailHandler;
-import views.screen.payment.PaymentScreenHandler;
+import views.screen.home_admin.AdminHomeScreenHandler;
 import views.screen.popup.PopupScreen;
 
 import java.io.File;
@@ -33,7 +26,7 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
 
     private ArrayList<Invoice> dataInvoice;
 
-    private HomeScreenHandler home;
+    private AdminHomeScreenHandler home;
 
     @FXML
     private ImageView aimsImage;
@@ -65,7 +58,7 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
         // on mouse clicked, we back to home
-        aimsImage.setOnMouseClicked(e -> homeScreenHandler.show());
+        aimsImage.setOnMouseClicked(e -> adminHomeScreenHandler.show());
     }
 
     private void initializeTableColumns() {
