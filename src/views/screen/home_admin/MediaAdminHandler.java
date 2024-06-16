@@ -158,5 +158,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
             adminCRUDController.changeQuantity(media.getId(), Integer.parseInt(priceResult.get()));
             adminCRUDController.changePrice(media.getId(), Integer.parseInt(priceResult.get()));
         }
+
+        home.refreshMediaList();
     }
 }
