@@ -62,7 +62,7 @@
                     <children>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="addItemBtn" layoutX="48.0" layoutY="14.0" mnemonicParsing="false" text="Add Item" />
+                        <Button fx:id="addItemBtn" layoutX="48.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddItem" text="Add Item" />
                         <Button fx:id="manageInvoiceBtn" layoutX="20.0" layoutY="63.0" mnemonicParsing="false" text="Manage Invoice List" />
                      </children></Pane>
                     </children>

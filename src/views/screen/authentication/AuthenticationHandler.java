@@ -1,4 +1,5 @@
-package views.screen.authenication;
+
+package views.screen.authentication;
 
 import controller.LoginController;
 import entity.db.AIMSDB;
@@ -87,8 +88,11 @@ public class AuthenticationHandler implements Initializable {
         if (loginController == null) loginController = new LoginController();
 
         alertMessage alert = new alertMessage();
-        if (login_username.getText().isEmpty() || login_password.getText().isEmpty()) {
+        if (login_username.getText().isEmpty() ||
+                (login_selectshowPassword.isSelected() && login_showPassword.getText().isEmpty()) ||
+                (!login_selectshowPassword.isSelected() && login_password.getText().isEmpty())) {
             alert.errorMessage("Username and Password are Required");
+
         } else {
             try {
                 User user = loginController.loginWithUsernameAndPassword(login_username.getText(), login_password.getText());

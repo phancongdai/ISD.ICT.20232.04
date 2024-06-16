@@ -40,6 +40,17 @@ public class Media {
         this.type = type;
     }
 
+    public Media(int id, String title, String category, int value, int price, int quantity, String type, String imageURL) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.value = value;
+        this.price = price;
+        this.quantity = quantity;
+        this.type = type;
+        this.imageURL = imageURL;
+    }
+
     public int getQuantity() throws SQLException{
         int updated_quantity = getMediaById(id).quantity;
         this.quantity = updated_quantity;
