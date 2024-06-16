@@ -56,7 +56,7 @@ public class Invoice {
     public void updateStatus(String status){
         this.status = status;
         Connection connection = AIMSDB.getConnection();
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         try{
             String sql = "UPDATE invoice SET status = ? WHERE paypalId = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -68,6 +68,23 @@ public class Invoice {
         }
     }
 
+    // New static method to update status by invoice ID
+    public static void updateStatus(int invoiceId, String status) throws SQLException {
+        Connection connection = AIMSDB.getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            String sql = "UPDATE invoice SET status = ? WHERE id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, invoiceId);
+            preparedStatement.executeUpdate();
+        } finally {
+            // Close PreparedStatement to avoid resource leaks and release resources
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        }
+    }
     public void saveInvoice() throws SQLException {
         Connection connection = AIMSDB.getConnection();
         PreparedStatement preparedStatement = null;

@@ -2,7 +2,7 @@ package views.screen.home_admin;
 
 import controller.AdminCRUDController;
 import controller.HomeController;
-import entity.cart.Cart;
+import controller.InvoiceListController;
 import entity.db.AIMSDB;
 import entity.media.Media;
 import javafx.fxml.FXML;
@@ -17,7 +17,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import utils.Configs;
 import utils.Utils;
-import views.screen.BaseScreenHandler;
+import views.screen.BaseScreenAdminHandler;
+import views.screen.invoicelist.InvoiceListAdminHandler;
 import views.screen.popup.PopupScreen;
 import javafx.event.ActionEvent;
 
@@ -31,7 +32,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class AdminHomeScreenHandler extends BaseScreenHandler implements Initializable {
+public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements Initializable {
 
     public static Logger LOGGER = Utils.getLogger(AdminHomeScreenHandler.class.getName());
 
@@ -237,7 +238,17 @@ public class AdminHomeScreenHandler extends BaseScreenHandler implements Initial
             addMediaHome(displayedItems);
         });
 
-
+        manageInvoiceBtn.setOnMouseClicked(e -> {
+            InvoiceListAdminHandler invoiceListAdminHandler;
+            try {
+                invoiceListAdminHandler = new InvoiceListAdminHandler(this.stage, Configs.INVOICE_LIST_ADMIN_PATH);
+                invoiceListAdminHandler.setHomeScreenHandler(this);
+                invoiceListAdminHandler.setBController(new InvoiceListController());
+                invoiceListAdminHandler.requestToInvoiceList(this);
+            } catch (IOException | SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         addMediaHome(this.homeItems);
         addMenuItem(0, "Book", splitMenuBtnSearch);
@@ -256,8 +267,6 @@ public class AdminHomeScreenHandler extends BaseScreenHandler implements Initial
                 MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this);
                 this.homeItems.add(m1);
             }
-            this.displayedItems = this.homeItems;
-            addMediaHome(this.homeItems);
 
             this.currentPage = 0;
             this.displayedItems = this.homeItems;

@@ -55,6 +55,7 @@ public class Configs {
 	public static final String HOME_MEDIA_PATH = "/views/fxml/media_home.fxml";
 	public static final String POPUP_PATH = "/views/fxml/popup.fxml";
 	public static final String INVOICE_LIST_PATH = "/views/fxml/invoice_list.fxml";
+	public static final String INVOICE_LIST_ADMIN_PATH = "/views/fxml/invoice_list_admin.fxml";
 
 	public static final String PAY_SCREEN_PATH = "/views/fxml/pay.fxml";
 
