@@ -126,6 +126,8 @@ public class MediaAdminHandler extends FXMLScreenHandler {
     }
 
     private void handleUpdateItem() throws SQLException {
+        if (adminCRUDController == null) adminCRUDController = new AdminCRUDController();
+
         // New price
         TextInputDialog priceDialog = new TextInputDialog(mediaPrice.getText());
         priceDialog.setTitle("Update Media Price");
