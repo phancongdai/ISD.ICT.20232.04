@@ -1,14 +1,15 @@
 
 package views.screen.authentication;
 
-import controller.LoginController;
-import entity.db.AIMSDB;
+import controller.AuthenticationController;
 import entity.user.User;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -21,11 +22,6 @@ import javafx.stage.Stage;
 import utils.Configs;
 import views.screen.home.HomeScreenHandler;
 import views.screen.home_admin.AdminHomeScreenHandler;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 
 public class AuthenticationHandler implements Initializable {
@@ -78,14 +74,10 @@ public class AuthenticationHandler implements Initializable {
     @FXML
     private TextField signup_username;
 
-    private PreparedStatement prepare;
-    private ResultSet result;
-    private Statement statement;
-
-    private LoginController loginController;
+    private AuthenticationController authenticationController;
 
     public void login() throws IOException {
-        if (loginController == null) loginController = new LoginController();
+        if (authenticationController == null) authenticationController = new AuthenticationController();
 
         alertMessage alert = new alertMessage();
         if (login_username.getText().isEmpty() ||
@@ -95,7 +87,7 @@ public class AuthenticationHandler implements Initializable {
 
         } else {
             try {
-                User user = loginController.loginWithUsernameAndPassword(login_username.getText(), login_password.getText());
+                User user = authenticationController.loginWithUsernameAndPassword(login_username.getText(), login_password.getText());
                 if (user == null) {
                     alert.errorMessage("Incorrect Username/Password");
                 } else {
@@ -113,58 +105,41 @@ public class AuthenticationHandler implements Initializable {
                     }
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                System.out.println("Login error: " + e.getMessage());
             }
         }
     }
 
-    public void register() {
+    public void register() throws SQLException {
+        if (authenticationController == null) authenticationController = new AuthenticationController();
 
         alertMessage alert = new alertMessage();
 
-        //Kiểm tra xem nếu để trường dữ liệu nào để trống
+        // Check for empty fields
         if (signup_email.getText().isEmpty() || signup_username.getText().isEmpty()
                 || signup_password.getText().isEmpty() || signup_cPassword.getText().isEmpty()) {
             alert.errorMessage("All fields are neccessary to be filled !");
-        } //Kiểm tra mật khẩu đã khớp với mật khẩu confirm hay chưa
-        else if (signup_cPassword.getText() == signup_password.getText()) {
+        } // Check matched password
+        else if (Objects.equals(signup_cPassword.getText(), signup_password.getText())) {
             alert.errorMessage("Password does not match !");
-        } //Kiểm tra độ dài mật khẩu hợp lệ hay chưa ?
+        } // Check password length
         else if (signup_password.getText().length() < 8) {
             alert.errorMessage("Invalid Password, at least 8 characters or more !");
         } else {
-            Connection connect = AIMSDB.getConnection();
-            try {
-                //Kiểm tra xem nếu tài khoản đã tồn tại rồi !
-                String checkUsername = "SELECT * FROM User WHERE name = '"
-                        + signup_username.getText() + "'";
-                statement = connect.createStatement();
-                result = statement.executeQuery(checkUsername);
-                if (result.next()) {
-                    alert.errorMessage(signup_username.getText() + " is already existed !");
-                } else {
-                    String insertData = "INSERT INTO User (email, name, password) VALUES (?, ?, ?)";
-                    prepare = connect.prepareStatement(insertData);
-                    prepare.setString(1, signup_email.getText());
-                    prepare.setString(2, signup_username.getText());
-                    prepare.setString(3, signup_password.getText());
-                    prepare.executeUpdate();
+            int result = authenticationController.registerNewUser(signup_email.getText(), signup_username.getText(), signup_password.getText());
+            if (result == 0) {
+                alert.errorMessage(signup_username.getText() + " is already existed or some error had happened");
+            } else {
+                alert.successMessage("Registered Successfully !!");
+                clearRegisterField();
 
-                    alert.successMessage("Registered Successfully !!");
-                    registerClearFields();
-
-                    signup_form.setVisible(false);
-                    login_form.setVisible(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                signup_form.setVisible(false);
+                login_form.setVisible(true);
             }
         }
     }
 
-    //Xóa sạch form đăng kí đi
-    public void registerClearFields() {
+    public void clearRegisterField() {
         signup_username.setText("");
         signup_email.setText("");
         signup_cPassword.setText("");
