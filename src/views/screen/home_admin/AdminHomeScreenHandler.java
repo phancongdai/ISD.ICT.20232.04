@@ -31,9 +31,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class HomeScreenHandler extends BaseScreenAdminHandler implements Initializable {
+public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements Initializable {
 
-    public static Logger LOGGER = Utils.getLogger(HomeScreenHandler.class.getName());
+    public static Logger LOGGER = Utils.getLogger(AdminHomeScreenHandler.class.getName());
 
     @FXML
     private ImageView aimsImage;
@@ -68,9 +68,9 @@ public class HomeScreenHandler extends BaseScreenAdminHandler implements Initial
     private List displayedItems;
     private Connection connect;
     private PreparedStatement prepare;
-    public static HomeScreenHandler _instance;
+    public static AdminHomeScreenHandler _instance;
 
-    public HomeScreenHandler(Stage stage, String screenPath) throws IOException {
+    public AdminHomeScreenHandler(Stage stage, String screenPath) throws IOException {
         super(stage, screenPath);
     }
 

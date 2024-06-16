@@ -95,7 +95,7 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 					//System.out.println("check");
                     BaseScreenHandler ResultScreenHandler = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, "PAYMENT RESULT", "SUCESSFULL!");
 					ResultScreenHandler.setPreviousScreen(this);
-					//ResultScreenHandler.setHomeScreenHandler(homeScreenHandler);
+					//ResultScreenHandler.setHomeScreenHandler(adminHomeScreenHandler);
 					ResultScreenHandler.setScreenTitle("Result");
 					ResultScreenHandler.show();
                 } catch (IOException e) {
@@ -113,7 +113,7 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 //		Map<String, String> response = ctrl.payOrder(invoice, contents);
 //		BaseScreenHandler resultScreen = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, response.get("RESULT"), response.get("MESSAGE") );
 //		resultScreen.setPreviousScreen(this);
-//		resultScreen.setHomeScreenHandler(homeScreenHandler);
+//		resultScreen.setHomeScreenHandler(adminHomeScreenHandler);
 //		resultScreen.setScreenTitle("Result Screen");
 //		resultScreen.show();
 //	}

@@ -44,13 +44,13 @@ public class MediaAdminHandler extends FXMLScreenHandler {
     private Button updateItemBtn;
 
     private Media media;
-    private HomeScreenHandler home;
+    private AdminHomeScreenHandler home;
     private Connection connect;
     private PreparedStatement prepare;
 
     private static Logger LOGGER = Utils.getLogger(MediaAdminHandler.class.getName());
 
-    public MediaAdminHandler(String screenPath, Media media, HomeScreenHandler home) throws SQLException, IOException {
+    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home) throws SQLException, IOException {
         super(screenPath);
         this.media = media;
         this.home = home;
@@ -114,7 +114,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
         prepare = connect.prepareStatement(deleteData);
         prepare.setInt(1,media.getId());
 
-        //dùng hàm bên HomeScreenHandler để load lại màn hình nhé !
+        //dùng hàm bên AdminHomeScreenHandler để load lại màn hình nhé !
         home.refreshMediaList();
     }
 
