@@ -258,6 +258,11 @@ public class AdminHomeScreenHandler extends BaseScreenHandler implements Initial
             }
             this.displayedItems = this.homeItems;
             addMediaHome(this.homeItems);
+
+            this.currentPage = 0;
+            this.displayedItems = this.homeItems;
+            List<MediaAdminHandler> displayedItems = updateMediaDisplay(this.homeItems);
+            addMediaHome(displayedItems);
         } catch (SQLException | IOException e) {
             LOGGER.info("Errors occurred: " + e.getMessage());
             e.printStackTrace();
