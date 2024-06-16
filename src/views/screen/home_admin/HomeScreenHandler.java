@@ -1,7 +1,7 @@
 package views.screen.home_admin;
 
 import controller.HomeController;
-import entity.cart.Cart;
+import controller.InvoiceListController;
 import entity.db.AIMSDB;
 import entity.media.Media;
 import javafx.fxml.FXML;
@@ -16,7 +16,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import utils.Configs;
 import utils.Utils;
-import views.screen.BaseScreenHandler;
+import views.screen.BaseScreenAdminHandler;
+import views.screen.invoicelist.InvoiceListAdminHandler;
 import views.screen.popup.PopupScreen;
 import javafx.event.ActionEvent;
 
@@ -30,7 +31,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class HomeScreenHandler extends BaseScreenHandler implements Initializable {
+public class HomeScreenHandler extends BaseScreenAdminHandler implements Initializable {
 
     public static Logger LOGGER = Utils.getLogger(HomeScreenHandler.class.getName());
 
@@ -220,7 +221,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     }
 
 
-
     private List<MediaAdminHandler> updateMediaDisplay( List Items) {
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, Items.size());
@@ -255,7 +255,17 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             addMediaHome(displayedItems);
         });
 
-
+        manageInvoiceBtn.setOnMouseClicked(e -> {
+            InvoiceListAdminHandler invoiceListAdminHandler;
+            try {
+                invoiceListAdminHandler = new InvoiceListAdminHandler(this.stage, Configs.INVOICE_LIST_ADMIN_PATH);
+                invoiceListAdminHandler.setHomeScreenHandler(this);
+                invoiceListAdminHandler.setBController(new InvoiceListController());
+                invoiceListAdminHandler.requestToInvoiceList(this);
+            } catch (IOException | SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         addMediaHome(this.homeItems);
         addMenuItem(0, "Book", splitMenuBtnSearch);
@@ -274,8 +284,10 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
                 MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this);
                 this.homeItems.add(m1);
             }
+            this.currentPage = 0;
             this.displayedItems = this.homeItems;
-            addMediaHome(this.homeItems);
+            List<MediaAdminHandler> displayedItems = updateMediaDisplay(this.homeItems);
+            addMediaHome(displayedItems);
         } catch (SQLException | IOException e) {
             LOGGER.info("Errors occurred: " + e.getMessage());
             e.printStackTrace();
