@@ -132,24 +132,6 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         }
         String category = categoryResult.get();
 
-        // Nhập giá trị (value)
-        TextInputDialog valueDialog = new TextInputDialog();
-        valueDialog.setTitle("Add New Item");
-        valueDialog.setHeaderText("Enter the value for the new media item:");
-        valueDialog.setContentText("Value:");
-
-        Optional<String> valueResult = valueDialog.showAndWait();
-        if (!valueResult.isPresent() || valueResult.get().isEmpty()) {
-            return; // Người dùng đóng hộp thoại hoặc không nhập giá trị
-        }
-        int value;
-        try {
-            value = Integer.parseInt(valueResult.get());
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid input for value: " + e.getMessage());
-            return;
-        }
-
         // Nhập giá (price)
         TextInputDialog priceDialog = new TextInputDialog();
         priceDialog.setTitle("Add New Item");

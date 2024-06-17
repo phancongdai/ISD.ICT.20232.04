@@ -103,7 +103,7 @@ public class Media {
     }
 
     public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
-        String sql = "insert into Media (title, type, category, imageUrl, price, quantity, value) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into Media (title, type, category, imageUrl, price, quantity) values (?, ?, ?, ?, ?, ?)";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
         stm.setString(1, title);
         stm.setString(2, type);
@@ -111,7 +111,6 @@ public class Media {
         stm.setString(4, imgUrl);
         stm.setDouble(5, price);
         stm.setInt(6, quantity);
-        stm.setInt(7, 1);
 
         stm.executeUpdate();
     }
