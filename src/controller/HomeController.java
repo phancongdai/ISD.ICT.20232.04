@@ -6,8 +6,8 @@ import java.util.List;
 
 import entity.cart.Cart;
 import entity.media.Media;
+import entity.user.User;
 import views.screen.home.MediaHandler;
-//funtional cohesion
 public class HomeController extends BaseController{
 
     /** Phương thức này lấy tất cả các đối tượng Media từ cơ sở dữ liệu và trả về chúng.
@@ -25,7 +25,8 @@ public class HomeController extends BaseController{
      * @return List[Media]
      * @throws SQLException
      */
-    public List getAllMedia() throws SQLException{
+
+    public List<Media> getAllMedia() throws SQLException{
         // data coupling
         return new Media().getAllMedia();
     }

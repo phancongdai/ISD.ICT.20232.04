@@ -4,6 +4,8 @@ import controller.PaymentController;
 import entity.invoice.Invoice;
 import entity.response.Response;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -77,6 +79,17 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 		vBox.getChildren().clear();
 		vBox.getChildren().add(paymentView);
 	}
+
+//	void confirmToPayOrder() throws IOException{
+//		String contents = "pay order";
+//		PaymentController ctrl = (PaymentController) getBController();
+//		Map<String, String> response = ctrl.payOrder(invoice, contents);
+//		BaseScreenHandler resultScreen = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, response.get("RESULT"), response.get("MESSAGE") );
+//		resultScreen.setPreviousScreen(this);
+//		resultScreen.setHomeScreenHandler(homeScreenHandler);
+//		resultScreen.setScreenTitle("Result Screen");
+//		resultScreen.show();
+//	}
 
 	public PaymentScreenHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
 		super(stage, screenPath);

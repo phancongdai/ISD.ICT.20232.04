@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -10,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import utils.Configs;
+import javafx.scene.Parent;
 import views.screen.home.*;
 
 public class App extends Application {
@@ -48,11 +50,11 @@ public class App extends Application {
 			// After fade out, load actual content
 			fadeOut.setOnFinished((e) -> {
 				try {
-					HomeScreenHandler homeHandler = new HomeScreenHandler(primaryStage, Configs.HOME_PATH);
-//					HomeScreenHandler._instance = homeHandler;
-					homeHandler.setScreenTitle("Home Screen");
-					homeHandler.setImage();
-					homeHandler.show();
+					Parent root1 = FXMLLoader.load(getClass().getResource("/views/fxml/login_and_sign_up.fxml"));
+					Scene scene1 = new Scene(root1); // Đã sửa lỗi từ 'Sence' thành 'Scene'
+					primaryStage.setScene(scene1);
+					primaryStage.setTitle("Login/Register"); // Đặt tiêu đề cho cửa sổ nếu muốn
+					primaryStage.show();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

@@ -10,4 +10,8 @@ public class InvoiceListController extends BaseController {
     public ArrayList<Invoice> getListInvoice() throws SQLException {
         return Invoice.getListInvoice();
     }
+
+    public void updateInvoiceStatus(int id, Boolean approved) throws SQLException {
+        Invoice.updateInvoiceStatus(id, approved);
+    }
 }

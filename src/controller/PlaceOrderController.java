@@ -83,14 +83,4 @@ public class PlaceOrderController extends BaseController{
         LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
         return fees;
     }
-
-    private double maxWeigh(Order order){
-        double max = 0;
-        for(Object object: order.getlstOrderMedia()){
-            OrderMedia orderMedia = (OrderMedia) object;
-            Media media = (Media) orderMedia.getMedia();
-            max = Math.max(max, media.getWeigh());
-        }
-        return max;
-    }
 }

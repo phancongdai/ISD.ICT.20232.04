@@ -131,11 +131,10 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     public void initialize(URL arg0, ResourceBundle arg1) {
         setBController(new HomeController());
         try{
-            List medium = getBController().getAllMedia();
+            List<Media> medium = getBController().getAllMedia();
             this.homeItems = new ArrayList<>();
-            for (Object object : medium) {
-                Media media = (Media)object;
-                MediaHandler m1 = new MediaHandler(Configs.HOME_MEDIA_PATH, media, this);
+            for (Media object : medium) {
+                MediaHandler m1 = new MediaHandler(Configs.HOME_MEDIA_PATH, object, this);
                 this.homeItems.add(m1);
             }
             this.displayedItems = this.homeItems;
@@ -144,12 +143,13 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             e.printStackTrace();
         }
 
-
+        // Home button
         aimsImage.setOnMouseClicked(e -> {
             List<MediaHandler> displayedItems = updateMediaDisplay(this.homeItems);
             addMediaHome(displayedItems);
         });
 
+        // Cart button
         cartImage.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
             try {
@@ -163,6 +163,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             }
         });
 
+        // Invoice button
         invoiceList.setOnMouseClicked(e -> {
             InvoiceListHandler invoiceListHandler;
             try {
@@ -217,12 +218,15 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     }
 
     public void addMenuItem(int position, String text, MenuButton menuButton){
+        // Create a menu item
         MenuItem menuItem = new MenuItem();
         Label label = new Label();
         label.prefWidthProperty().bind(menuButton.widthProperty().subtract(31));
         label.setText(text);
         label.setTextAlignment(TextAlignment.RIGHT);
         menuItem.setGraphic(label);
+
+        // Set action
         menuItem.setOnAction(e -> {
             // empty home media
             hboxMedia.getChildren().forEach(node -> {
@@ -235,6 +239,8 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
             checkEmpty(filteredItems);
         });
+
+        // Add to button
         menuButton.getItems().add(position, menuItem);
     }
 
