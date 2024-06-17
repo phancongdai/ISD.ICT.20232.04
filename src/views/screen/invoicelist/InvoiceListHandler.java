@@ -2,7 +2,6 @@ package views.screen.invoicelist;
 
 import common.exception.PaymentException;
 import controller.InvoiceListController;
-import controller.PaymentController;
 import entity.invoice.Invoice;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -24,14 +22,14 @@ import views.screen.BaseScreenHandler;
 import views.screen.home.HomeScreenHandler;
 import views.screen.invoice.InvoiceDetailHandler;
 import views.screen.payment.PaymentScreenHandler;
-import views.screen.popup.PopupScreen;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static views.screen.popup.PopupScreen.*;
+import static views.screen.popup.PopupScreen.error;
+import static views.screen.popup.PopupScreen.success;
 
 public class InvoiceListHandler extends BaseScreenHandler {
 
@@ -73,6 +71,7 @@ public class InvoiceListHandler extends BaseScreenHandler {
         aimsImage.setImage(im);
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
+            setScreenTitle("Home Screen");
             homeScreenHandler.show();
         });
     }
@@ -91,7 +90,7 @@ public class InvoiceListHandler extends BaseScreenHandler {
 
         invoice_detail.setCellValueFactory(cellData -> {
             Button detailButton = createDetailButton(cellData.getValue());
-            System.out.println(cellData.getValue());
+            //System.out.println(cellData.getValue());
             return new SimpleObjectProperty<>(detailButton);
         });
         invoice_detail.setCellFactory(col -> new TableCell<>() {
@@ -131,9 +130,8 @@ public class InvoiceListHandler extends BaseScreenHandler {
 
     private Button createCustomButton(Invoice invoice) {
         Button customButton = new Button();
-
         String status = invoice.getStatus();
-        System.out.println(invoice.getId());
+        //System.out.println(invoice.getId());
         if ("CREATED".equals(status)) {
             customButton.setText("Payment");
             customButton.setOnAction(event -> {
@@ -141,7 +139,7 @@ public class InvoiceListHandler extends BaseScreenHandler {
                 try {
                     paymentScreen = new PaymentScreenHandler(this.stage, Configs.PAYMENT_SCREEN_PATH, invoice);
                     InterbankSubsystem interbankSubsystem = new InterbankSubsystem();
-                    paymentScreen.setBController(new PaymentController(interbankSubsystem));
+                    //paymentScreen.setBController(new PaymentController(interbankSubsystem));
                     paymentScreen.setPreviousScreen(this);
                     paymentScreen.setHomeScreenHandler(homeScreenHandler);
                     paymentScreen.setScreenTitle("Payment Screen");
@@ -155,8 +153,8 @@ public class InvoiceListHandler extends BaseScreenHandler {
             customButton.setOnAction(event -> {
                 try {
                     InterbankSubsystem interbankSubsystem = new InterbankSubsystem();
-                    PaymentController paymentController = new PaymentController(interbankSubsystem);
-                    paymentController.refundOrder(invoice);
+                    //PaymentController paymentController = new PaymentController(interbankSubsystem);
+                    //paymentController.refundOrder(invoice);
                     success("Refund successful", 3);
                     loadData();
                 } catch (IOException | SQLException | PaymentException e) {

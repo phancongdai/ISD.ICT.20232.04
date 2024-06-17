@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
+import views.screen.home.HomeScreenHandler;
 import views.screen.popup.PopupScreen;
 import views.screen.shipping.ShippingScreenHandler;
 
@@ -54,24 +55,37 @@ public class CartScreenHandler extends BaseScreenHandler {
 	@FXML
 	private Button btnPlaceOrder;
 
+	@FXML
+	private Button btnPlaceRushOrder;
+
 	public CartScreenHandler(Stage stage, String screenPath) throws IOException {
 		super(stage, screenPath);
-
 		// fix relative image path caused by fxml
 		File file = new File("assets/images/Logo.png");
 		Image im = new Image(file.toURI().toString());
 		aimsImage.setImage(im);
-
+		setHomeScreenHandler(new HomeScreenHandler(this.stage, Configs.HOME_PATH));
 		// on mouse clicked, we back to home
 		aimsImage.setOnMouseClicked(e -> {
+			setScreenTitle("Home Screen");
 			homeScreenHandler.show();
-		});
 
+		});
 		// on mouse clicked, we start processing place order usecase
 		btnPlaceOrder.setOnMouseClicked(e -> {
 			LOGGER.info("Place Order button clicked");
 			try {
 				requestToPlaceOrder();
+			} catch (SQLException | IOException exp) {
+				LOGGER.severe("Cannot place the order, see the logs");
+				exp.printStackTrace();
+				throw new PlaceOrderException(Arrays.toString(exp.getStackTrace()).replaceAll(", ", "\n"));
+			}
+		});
+		btnPlaceRushOrder.setOnMouseClicked(e -> {
+			LOGGER.info("Place Rush Order button clicked");
+			try {
+				requestToPlaceRushOrder();
 			} catch (SQLException | IOException exp) {
 				LOGGER.severe("Cannot place the order, see the logs");
 				exp.printStackTrace();
@@ -95,6 +109,7 @@ public class CartScreenHandler extends BaseScreenHandler {
 	public void requestToViewCart(BaseScreenHandler prevScreen) throws SQLException {
 		setPreviousScreen(prevScreen);
 		setScreenTitle("Cart Screen");
+		//System.out.println(getBController().toString());
 		getBController().checkAvailabilityOfProduct();
 		displayCartWithMediaAvailability();
 		show();
@@ -109,16 +124,16 @@ public class CartScreenHandler extends BaseScreenHandler {
 				return;
 			}
 			placeOrderController.placeOrder();
-			
 			// display available media
 			displayCartWithMediaAvailability();
-
 			// create order
 			Order order = placeOrderController.createOrder();
 			//System.out.println(order.getID() + " " + order.getAmount() + " " +order.getlstOrderMedia());
+			order.setTypePayment("standard order");
 			System.out.println(order.toString());
 			// display shipping form
 			ShippingScreenHandler ShippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
+			ShippingScreenHandler.setScreenTitle("Shipping Screen");
 			ShippingScreenHandler.setPreviousScreen(this);
 			ShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
 			File file = new File("assets/images/Logo.png");
@@ -126,9 +141,46 @@ public class CartScreenHandler extends BaseScreenHandler {
 			aimsImage.setImage(im);
 			// on mouse clicked, we back to home
 			aimsImage.setOnMouseClicked(e -> {
-				ShippingScreenHandler.getPreviousScreen().show();
+				setScreenTitle("Home screen");
+                this.getPreviousScreen().show();
 			});
+			ShippingScreenHandler.setBController(placeOrderController);
+			ShippingScreenHandler.show();
+		} catch (MediaNotAvailableException e) {
+			// if some media are not available then display cart and break usecase Place Order
+			displayCartWithMediaAvailability();
+		}
+
+	}
+	public void requestToPlaceRushOrder() throws SQLException, IOException {
+		try {
+			// create placeOrderController and process the order
+			PlaceOrderController placeOrderController = new PlaceOrderController();
+			if (placeOrderController.getListCartMedia().size() == 0){
+				PopupScreen.error("You don't have anything to place");
+				return;
+			}
+			placeOrderController.placeOrder();
+			// display available media
+			displayCartWithMediaAvailability();
+			// create order
+			Order order = placeOrderController.createOrder();
+			//System.out.println(order.getID() + " " + order.getAmount() + " " +order.getlstOrderMedia());
+			order.setTypePayment("rush order");
+			System.out.println(order.toString());
+			// display shipping form
+			ShippingScreenHandler ShippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
 			ShippingScreenHandler.setScreenTitle("Shipping Screen");
+			ShippingScreenHandler.setPreviousScreen(this);
+			ShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+			File file = new File("assets/images/Logo.png");
+			Image im = new Image(file.toURI().toString());
+			aimsImage.setImage(im);
+			// on mouse clicked, we back to home
+			aimsImage.setOnMouseClicked(e -> {
+				setScreenTitle("Home screen");
+				this.getPreviousScreen().show();
+			});
 			ShippingScreenHandler.setBController(placeOrderController);
 			ShippingScreenHandler.show();
 		} catch (MediaNotAvailableException e) {

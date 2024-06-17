@@ -105,7 +105,7 @@ public class Media {
         return this.id;
     }
 
-    private Media setId(int id){
+    public Media setId(int id){
         this.id = id;
         return this;
     }

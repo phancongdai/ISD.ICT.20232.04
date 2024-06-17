@@ -1,18 +1,16 @@
 package views.screen.popup;
 
-import java.io.IOException;
-
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import utils.Configs;
 import views.screen.BaseScreenHandler;
+
+import java.io.IOException;
 
 
 public class PopupScreen extends BaseScreenHandler{
@@ -29,7 +27,15 @@ public class PopupScreen extends BaseScreenHandler{
         super(stage, Configs.POPUP_PATH);
     }
 
-    private static PopupScreen popup(String message, String imagepath, Boolean undecorated) throws IOException{
+    public static PopupScreen popup(String message, String imagepath) throws IOException{
+        PopupScreen popup = new PopupScreen(new Stage());
+        //if (undecorated) popup.stage.initStyle(StageStyle.UNDECORATED);
+        popup.message.setText(message);
+        popup.setImage(imagepath);
+        return popup;
+    }
+
+    public static PopupScreen popup(String message, String imagepath, Boolean undecorated) throws IOException{
         PopupScreen popup = new PopupScreen(new Stage());
         if (undecorated) popup.stage.initStyle(StageStyle.UNDECORATED);
         popup.message.setText(message);

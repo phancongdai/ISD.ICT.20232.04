@@ -100,6 +100,7 @@ public class Response {
     }
 
     private void handleException() throws TransactionNotDoneException, TransactionFailedException, TransactionReverseException, UnrecognizedException {
+        System.out.println(vnp_ResponseCode);
         switch (this.vnp_ResponseCode) {
             case "00":
                 break;
@@ -117,6 +118,31 @@ public class Response {
                 throw new SendToBankException();
             case "07":
                 throw new AnonymousTransactionException();
+            case "24":
+                System.out.println("ERROR: Giao dịch không thành công do: Khách hàng hủy giao dịch");
+                break;
+            case "11":
+                System.out.println("ERROR: Giao dịch không thành công do: Đã hết hạn chờ thanh toán. Xin quý khách vui lòng thực hiện lại giao dịch.");
+                break;
+            case "12":
+                System.out.println("ERROR: Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng bị khóa.");
+                break;
+            case "13":
+                System.out.println("ERROR: Giao dịch không thành công do Quý khách nhập sai mật khẩu xác thực giao dịch (OTP). Xin quý khách vui lòng thực hiện lại giao dịch.");
+                break;
+            case "51":
+                System.out.println("ERROR: Giao dịch không thành công do: Tài khoản của quý khách không đủ số dư để thực hiện giao dịch.");
+            case "65":
+                System.out.println("ERROR: Giao dịch không thành công do: Tài khoản của Quý khách đã vượt quá hạn mức giao dịch trong ngày.");
+                break;
+            case "75":
+                System.out.println("ERROR: Ngân hàng thanh toán đang bảo trì.");
+                break;
+            case "79":
+                System.out.println("ERROR: Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch");
+                break;
+            case "99":
+                System.out.println("ERROR: \tCác lỗi khác (lỗi còn lại, không có trong danh sách mã lỗi đã liệt kê)");
             default:
                 throw new UnrecognizedException();
         }

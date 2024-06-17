@@ -17,7 +17,6 @@ public class VnPaySubsystem implements VnPayInterface {
     }
 
     public String generatePayUrl(int amount, String contents) {
-
         try {
             return ctrl.generatePayOrderUrl(amount, contents);
         } catch (IOException e) {

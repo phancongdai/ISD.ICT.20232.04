@@ -58,6 +58,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		Image im = new Image(file.toURI().toString());
 		aimsImage.setImage(im);
 		aimsImage.setOnMouseClicked(e -> {
+			setScreenTitle("Cart Screen");
 			this.getPreviousScreen().show();
 		});
 	}
@@ -76,8 +77,6 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 
 	@FXML
 	void submitDeliveryInfo(MouseEvent event) throws IOException, InterruptedException, SQLException {
-
-		// add info to messages
 		HashMap messages = new HashMap<>();
 		messages.put("name", name.getText());
 		messages.put("phone", phone.getText());
@@ -93,6 +92,14 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		}
 		// calculate shipping fees
 		order.setDeliveryInfo(messages);
+		if(order.getTypePayment().toLowerCase()=="rush order"){
+			String provincetmp = String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase();
+			System.out.println(String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase());
+			if(!provincetmp.equals("hà nội")) {
+				PopupScreen.error("Your address is not available for Rush order delivery!");
+				return;
+			}
+		}
 		int shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
 		order.saveOrder();

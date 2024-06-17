@@ -100,16 +100,6 @@ public class VnPayConfig {
     }
 
     public static String getIpAddress() throws IOException {
-//        URL url = new URL("http://www.realip.info/api/p/realip.php");
-//        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()))) {
-//            String content = String.join("\n", in.lines().collect(Collectors.toList()));
-//            Matcher matcher = pattern.matcher(content);
-//            if (matcher.matches()) {
-//                return matcher.group("ip");
-//            } else {
-//                return "No ip found";
-//            }
-//        }
         return "127.0.0.1:50387";
     }
 

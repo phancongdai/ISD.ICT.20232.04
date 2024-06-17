@@ -58,7 +58,7 @@ public class Invoice {
         Connection connection = AIMSDB.getConnection();
         PreparedStatement preparedStatement = null;
         try{
-            String sql = "UPDATE invoice SET status = ? WHERE paypalId = ?";
+            String sql = "UPDATE invoice SET status = ? WHERE VNPayId = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,status);
             preparedStatement.setString(2, this.getPaypalId());

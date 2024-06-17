@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
+import views.screen.home.HomeScreenHandler;
 import views.screen.payment.PaymentScreenHandler;
 
 import java.io.File;
@@ -63,15 +64,26 @@ public class InvoiceScreenHandler extends BaseScreenHandler {
 	public InvoiceScreenHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
 		super(stage, screenPath);
 		this.invoice = invoice;
-		setPreviousScreen(super.homeScreenHandler);
+		setPreviousScreen(this.getPreviousScreen());
+		//setHomeScreenHandler(new HomeScreenHandler(this.stage, Configs.HOME_PATH));
 		File file = new File("assets/images/Logo.png");
 		Image im = new Image(file.toURI().toString());
 		aimsImage.setImage(im);
 		// on mouse clicked, we back to home
 		aimsImage.setOnMouseClicked(e -> {
+			setScreenTitle("Cart Screen");
+			if(getPreviousScreen()==null) {
+                try {
+                    setPreviousScreen(new HomeScreenHandler(this.stage, Configs.HOME_PATH));
+					setScreenTitle("Home Screen");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
 			getPreviousScreen().show();
-		});
+        });
 		setInvoiceInfo();
+
 	}
 
 	private void setInvoiceInfo(){
@@ -100,14 +112,18 @@ public class InvoiceScreenHandler extends BaseScreenHandler {
 	}
 
 	@FXML
-	void ConfirmInvoice(MouseEvent event) throws IOException {
+	void ConfirmInvoice(MouseEvent event) throws IOException, SQLException {
 		BaseScreenHandler paymentScreen = new PaymentScreenHandler(this.stage, Configs.PAY_SCREEN_PATH, invoice);
 		//InterbankInterface interbankSubsystem = new InterbankSubsystem();
 		paymentScreen.setPreviousScreen(this);
 		paymentScreen.setHomeScreenHandler(homeScreenHandler);
 		paymentScreen.setScreenTitle("Payment Screen");
 		paymentScreen.show();
-		LOGGER.info("Confirmed invoice");
+		//LOGGER.info("Confirmed invoice");
 	}
+//	button.setOnAction(event -> {
+//		// Code to be executed on button click
+//		System.out.println("Button clicked!");
+//	});
 
 }

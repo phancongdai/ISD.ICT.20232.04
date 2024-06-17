@@ -2,6 +2,7 @@ package views.screen.payment;
 
 import controller.PaymentController;
 import entity.invoice.Invoice;
+import entity.response.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +13,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import utils.Configs;
 import views.screen.BaseScreenHandler;
-import entity.response.Response;
+import views.screen.invoice.InvoiceScreenHandler;
+
 import java.io.IOException;
 
 public class PaymentScreenHandler extends BaseScreenHandler {
@@ -38,45 +40,9 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 	private ImageView back;
 
 	private ResultScreenHandler resultScreenHandler;
-
-//	public void setResponse(String response) {
-//		this.Response  = response;
-//	}
-//
-//	public String getResponse() {
-//		return Response;
-//	}
 	public PaymentScreenHandler(Stage stage, String screenPath, int amount, String contents) throws IOException {
 		super(stage, screenPath);
 	}
-
-	// Data Coupling
-//	public PaymentScreenHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
-//		super(stage, screenPath);
-//		this.invoice = invoice;
-//		String url = "https://www.sandbox.paypal.com/checkoutnow?token=" + this.invoice.getPaypalId();
-//		paymentLink.setText(url);
-//
-//		btnConfirmPayment.setOnMouseClicked(e -> {
-//			try {
-//				confirmToPayOrder();
-//				//Content Coupling
-//				((PaymentController) getBController()).emptyCart();
-//			} catch (Exception exp) {
-//				System.out.println(exp.getStackTrace());
-//			}
-//		});
-//
-//		btnGoToLink.setOnMouseClicked(e -> {
-//			try {
-//				Desktop.getDesktop().browse(new URI(url));
-//			} catch (Exception exp) {
-//				System.out.println(exp.getStackTrace());
-//			}
-//		});
-//	}
-
-
 
 	private void displayWebView() {
 		var paymentController = new PaymentController();
@@ -84,6 +50,7 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 		System.out.println(paymentUrl);
 		WebView paymentView = new WebView();
 		WebEngine webEngine = paymentView.getEngine();
+		System.out.println(paymentUrl);
 		webEngine.load(paymentUrl);
 		webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
 			// Xử lý khi URL thay đổi
@@ -91,41 +58,42 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 			//this.setResponse(handleUrlChanged(newValue));
 			if(newValue.contains("http://127.0.0.1:50387/?")) {
 				response = new Response(newValue);
-                try {
-					//System.out.println("check");
-                    BaseScreenHandler ResultScreenHandler = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, "PAYMENT RESULT", "SUCESSFULL!");
-					ResultScreenHandler.setPreviousScreen(this);
-					//ResultScreenHandler.setHomeScreenHandler(homeScreenHandler);
-					ResultScreenHandler.setScreenTitle("Result");
-					ResultScreenHandler.show();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+				//System.out.println(invoice.getAmount());
+				//System.out.println("Amount VNPay: "+ response.getVnp_Amount());
+                if(response.getVnp_ResponseCode()=="00"){
+					try {
+						paymentController.emptyCart();
+						System.out.println("Successful Payment");
+						BaseScreenHandler ResultScreenHandler = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, "PAYMENT RESULT", "SUCESSFULL!", String.valueOf(invoice.getId()), response.getVnp_BankCode(), response.getVnp_BankTranNo(), String.valueOf(invoice.getAmount()), response.getVnp_TransactionStatus(), response.getVnp_PayDate());
+						ResultScreenHandler.setPreviousScreen(this);
+						ResultScreenHandler.setScreenTitle("Result");
+						ResultScreenHandler.show();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				} else {
+					try {
+						BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
+						InvoiceScreenHandler.setScreenTitle("Invoice Screen");
+						InvoiceScreenHandler.show();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+
+				}
             }
 		});
 		vBox.getChildren().clear();
 		vBox.getChildren().add(paymentView);
 	}
 
-//	void confirmToPayOrder() throws IOException{
-//		String contents = "pay order";
-//		PaymentController ctrl = (PaymentController) getBController();
-//		Map<String, String> response = ctrl.payOrder(invoice, contents);
-//		BaseScreenHandler resultScreen = new ResultScreenHandler(this.stage, Configs.RESULT_SCREEN_PATH, response.get("RESULT"), response.get("MESSAGE") );
-//		resultScreen.setPreviousScreen(this);
-//		resultScreen.setHomeScreenHandler(homeScreenHandler);
-//		resultScreen.setScreenTitle("Result Screen");
-//		resultScreen.show();
-//	}
-
 	public PaymentScreenHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
 		super(stage, screenPath);
 		this.invoice = invoice;
 		back.setOnMouseClicked(e -> {
+			setScreenTitle("Invoice screen");
 			this.getPreviousScreen().show();
 		});
 		displayWebView();
-		//Map<String, String> response = parseQueryParameters(this.getResponse());
-		//response.forEach((key,value)->System.out.println(key + " :" +value));
 	}
 }

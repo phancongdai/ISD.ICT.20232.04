@@ -92,7 +92,6 @@ public class VnPaySubsystemController {
 
     public PaymentTransaction makePaymentTransaction(Response response) throws ParseException {
         if (response == null) return null;
-
         // Create Payment transaction
         String errorCode = response.getVnp_TransactionStatus();
         String transactionId = response.getVnp_TransactionNo();

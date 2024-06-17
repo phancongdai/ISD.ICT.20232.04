@@ -117,7 +117,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         }
     }
 
-    private List<MediaHandler> updateMediaDisplay( List Items) {
+    private List<MediaHandler> updateMediaDisplay(List Items) {
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, Items.size());
         List<MediaHandler> displayedItems = new ArrayList<>(Items.subList(startIndex, endIndex));
@@ -233,36 +233,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
             // filter only media with the choosen category
             List<MediaHandler> filteredItems = new ArrayList<>();
-            homeItems.forEach(me -> {
-                MediaHandler media = (MediaHandler) me;
-                if (media.getMedia().getTitle().toLowerCase().startsWith(text.toLowerCase())){
-                    filteredItems.add(media);
-                }else{
-                    if (text.equals("<20đ")) {
-                        if (media.getMedia().getPrice() < 20) {
-                            filteredItems.add(media);
-                        }
 
-                    } else if (text.equals("20đ-50đ")) {
-                        if (media.getMedia().getPrice() >= 20 && media.getMedia().getPrice() < 50) {
-                            filteredItems.add(media);
-                        }
-                    } else if (text.equals("50đ-100đ")) {
-                        if (media.getMedia().getPrice() >= 50 && media.getMedia().getPrice() <= 100) {
-                            filteredItems.add(media);
-                        }
-                    }
-                    else if (text.equals(">100đ")) {
-                        if (media.getMedia().getPrice() > 100) {
-                            filteredItems.add(media);
-                        }
-                    }
-
-                    Collections.sort(filteredItems, Comparator.comparingDouble(
-                            mediax -> ((MediaHandler) mediax).getMedia().getPrice()));
-                }
-
-            });
             checkEmpty(filteredItems);
         });
         menuButton.getItems().add(position, menuItem);
@@ -317,18 +288,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         }
     }
 
-    // public void handleInvoiceDetail(Invoice invoice){
-    //     InvoiceDetailHandler invoiceDetailHandler;
-    //     try {
-    //         invoiceDetailHandler = new InvoiceDetailHandler(this.stage, invoice, Configs.INVOICE_DETAIL_PATH);
-    //         invoiceDetailHandler.requestToDetail(this);
-    //         invoiceDetailHandler.setHomeScreenHandler(this);
-    //     } catch (IOException ex) {
-    //         throw new RuntimeException(ex);
-    //     } catch (SQLException ex) {
-    //         throw new RuntimeException(ex);
-    //     }
-    // }
 
     public List<MediaHandler> convertMediaHandlerList(List<Media> items) throws SQLException, IOException {
         List<MediaHandler> mediaHandlerList = new ArrayList<>();

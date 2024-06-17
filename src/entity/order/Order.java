@@ -1,5 +1,8 @@
 package entity.order;
 
+import entity.db.AIMSDB;
+import utils.Configs;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,9 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import entity.db.AIMSDB;
-import utils.Configs;
 
 public class Order {
 
@@ -69,6 +69,17 @@ public class Order {
     public String toStringWithDeliveryInfo(){
         return this.toString() + " " + this.getDeliveryInfo();
     }
+
+    private String typePayment;
+
+    public void setTypePayment(String typePayment) {
+        this.typePayment = typePayment;
+    }
+
+    public String getTypePayment() {
+        return typePayment;
+    }
+
     public int getAmount(){
         double amount = 0;
         for (Object object : lstOrderMedia) {
