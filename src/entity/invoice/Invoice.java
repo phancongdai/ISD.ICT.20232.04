@@ -20,6 +20,7 @@ public class Invoice {
 
     public Invoice(Order order){
         this.order = order;
+        this.amount = order.getAmount() + order.getShippingFees();
     }
 
     public Invoice(Order order, String id){
@@ -58,10 +59,11 @@ public class Invoice {
         Connection connection = AIMSDB.getConnection();
         PreparedStatement preparedStatement = null;
         try{
-            String sql = "UPDATE invoice SET status = ? WHERE VNPayId = ?";
+            String sql = "UPDATE invoice SET status = ?, VNPayId = ? WHERE id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,status);
-            preparedStatement.setString(2, this.getPaypalId());
+            preparedStatement.setString(2,this.getPaypalId());
+            preparedStatement.setInt(3, this.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

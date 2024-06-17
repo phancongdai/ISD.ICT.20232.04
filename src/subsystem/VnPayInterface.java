@@ -7,12 +7,6 @@ import entity.response.Response;
 
 import java.text.ParseException;
 
-/**
- * The {@code InterbankInterface} class is used to communicate with the
- * {@link VnPaySubsystem InterbankSubsystem} to make transaction.
- *
- * @author hieud
- */
 public interface VnPayInterface {
 
     /**

@@ -121,7 +121,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, Items.size());
         List<MediaHandler> displayedItems = new ArrayList<>(Items.subList(startIndex, endIndex));
-
         int totalPages = (int) Math.ceil((double) Items.size() / itemsPerPage);
         int currentDisplayPage = currentPage + 1;
         currentPageLabel.setText("Page " + currentDisplayPage + " of " + totalPages);

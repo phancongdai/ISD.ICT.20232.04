@@ -114,16 +114,9 @@ public class InvoiceScreenHandler extends BaseScreenHandler {
 	@FXML
 	void ConfirmInvoice(MouseEvent event) throws IOException, SQLException {
 		BaseScreenHandler paymentScreen = new PaymentScreenHandler(this.stage, Configs.PAY_SCREEN_PATH, invoice);
-		//InterbankInterface interbankSubsystem = new InterbankSubsystem();
 		paymentScreen.setPreviousScreen(this);
 		paymentScreen.setHomeScreenHandler(homeScreenHandler);
 		paymentScreen.setScreenTitle("Payment Screen");
 		paymentScreen.show();
-		//LOGGER.info("Confirmed invoice");
 	}
-//	button.setOnAction(event -> {
-//		// Code to be executed on button click
-//		System.out.println("Button clicked!");
-//	});
-
 }

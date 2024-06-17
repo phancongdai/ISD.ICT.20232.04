@@ -4,8 +4,6 @@ import controller.PaymentController;
 import entity.invoice.Invoice;
 import entity.response.Response;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -19,17 +17,6 @@ import java.io.IOException;
 
 public class PaymentScreenHandler extends BaseScreenHandler {
 	public Response response;
-	@FXML
-	private Button btnConfirmPayment;
-
-	@FXML
-	private ImageView loadingImage;
-
-	@FXML
-	private Label paymentLink;
-
-	@FXML
-	private Button btnGoToLink;
 
 	@FXML
 	private VBox vBox;
@@ -60,7 +47,7 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 				response = new Response(newValue);
 				//System.out.println(invoice.getAmount());
 				//System.out.println("Amount VNPay: "+ response.getVnp_Amount());
-                if(response.getVnp_ResponseCode()=="00"){
+                if(response.getVnp_ResponseCode().equals("00")){
 					try {
 						paymentController.emptyCart();
 						System.out.println("Successful Payment");
@@ -68,10 +55,14 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 						ResultScreenHandler.setPreviousScreen(this);
 						ResultScreenHandler.setScreenTitle("Result");
 						ResultScreenHandler.show();
+						this.invoice.setPaypalId(response.getVnp_BankTranNo());
+						this.invoice.updateStatus("PAYMENT COMPLETED");
+
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
-				} else {
+				}
+				if(!response.getVnp_ResponseCode().equals("00")){
 					try {
 						BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
 						InvoiceScreenHandler.setScreenTitle("Invoice Screen");
