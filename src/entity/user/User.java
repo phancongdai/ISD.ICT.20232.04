@@ -1,14 +1,10 @@
 package entity.user;
 
-import entity.cart.Cart;
-import entity.cart.CartMedia;
 import entity.db.AIMSDB;
-import entity.media.Media;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class User {
 

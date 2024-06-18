@@ -101,30 +101,25 @@ public class MediaHandler extends FXMLScreenHandler {
 			new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
 		spinner = new Spinner<Integer>(valueFactory);
 		spinner.setOnMouseClicked( e -> {
-			try {
-				int numOfProd = this.spinner.getValue();
-				int remainQuantity = cartMedia.getMedia().getQuantity();
-				LOGGER.info("NumOfProd: " + numOfProd + " -- remainOfProd: " + remainQuantity);
-				if (numOfProd > remainQuantity){
-					LOGGER.info("product " + cartMedia.getMedia().getTitle() + " only remains " + remainQuantity + " (required " + numOfProd + ")");
-					labelOutOfStock.setText("Sorry, Only " + remainQuantity + " remain in stock");
-					spinner.getValueFactory().setValue(remainQuantity);
-					numOfProd = remainQuantity;
-				}
-
-				// update quantity of mediaCart in useCart
-				cartMedia.setQuantity(numOfProd);
-
-				// update the total of mediaCart
-				price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()));
-
-				// update subtotal and amount of Cart
-				cartScreen.updateCartAmount();
-
-			} catch (SQLException e1) {
-				throw new MediaUpdateException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
+			int numOfProd = this.spinner.getValue();
+			int remainQuantity = cartMedia.getMedia().getQuantity();
+			LOGGER.info("NumOfProd: " + numOfProd + " -- remainOfProd: " + remainQuantity);
+			if (numOfProd > remainQuantity){
+				LOGGER.info("product " + cartMedia.getMedia().getTitle() + " only remains " + remainQuantity + " (required " + numOfProd + ")");
+				labelOutOfStock.setText("Sorry, Only " + remainQuantity + " remain in stock");
+				spinner.getValueFactory().setValue(remainQuantity);
+				numOfProd = remainQuantity;
 			}
-			
+
+			// update quantity of mediaCart in useCart
+			cartMedia.setQuantity(numOfProd);
+
+			// update the total of mediaCart
+			price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()));
+
+			// update subtotal and amount of Cart
+			cartScreen.updateCartAmount();
+
 		});
 		spinnerFX.setAlignment(Pos.CENTER);
 		spinnerFX.getChildren().add(this.spinner);

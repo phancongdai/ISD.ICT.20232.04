@@ -4,6 +4,7 @@ import common.exception.ProcessInvoiceException;
 import entity.db.AIMSDB;
 import entity.invoice.Invoice;
 import entity.media.Media;
+import entity.media.MediaRepository;
 import entity.order.OrderMedia;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -173,14 +174,15 @@ public class InvoiceDetailHandler extends BaseScreenHandler {
         preparedStatement1.setInt(1, id);
         ResultSet res = preparedStatement1.executeQuery();
         if(res.next()) {
-            return new Media()
-                    .setId(res.getInt("id"))
-                    .setTitle(res.getString("title"))
-                    .setQuantity(res.getInt("quantity"))
-                    .setCategory(res.getString("category"))
-                    .setMediaURL(res.getString("imageUrl"))
-                    .setPrice(res.getInt("price"))
-                    .setType(res.getString("type"));
+            Media newMedia = new Media();
+            newMedia.setId(res.getInt("id"));
+            newMedia.setTitle(res.getString("title"));
+            newMedia.setQuantity(res.getInt("quantity"));
+            newMedia.setCategory(res.getString("category"));
+            newMedia.setImageURL(res.getString("imageUrl"));
+            newMedia.setPrice(res.getInt("price"));
+            newMedia.setType(res.getString("type"));
+            return newMedia;
         }
         return null;
     }
