@@ -6,6 +6,7 @@ import java.util.List;
 
 import entity.cart.Cart;
 import entity.media.Media;
+import entity.media.MediaRepository;
 import entity.user.User;
 import views.screen.home.MediaHandler;
 public class HomeController extends BaseController{
@@ -28,7 +29,7 @@ public class HomeController extends BaseController{
 
     public List<Media> getAllMedia() throws SQLException{
         // data coupling
-        return new Media().getAllMedia();
+        return new MediaRepository().getAllMedia();
     }
     public List<Media> filterMediaByKeyWord(String keyword, List<Media> items) {
         List<Media> filteredItems = new ArrayList<>();
