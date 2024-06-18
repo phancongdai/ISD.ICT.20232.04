@@ -56,9 +56,10 @@ public class ResultScreenHandler extends BaseScreenHandler {
 
 	@FXML
 	void confirmPayment(MouseEvent event) throws IOException {
-		setHomeScreenHandler(new HomeScreenHandler(this.stage, Configs.HOME_PATH));
-		homeScreenHandler.show();
-
+		HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+		homeHandler.setScreenTitle("Home Screen");
+		homeHandler.setImage();
+		homeHandler.show();
 	}
 
 }
