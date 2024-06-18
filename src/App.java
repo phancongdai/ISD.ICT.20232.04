@@ -50,11 +50,11 @@ public class App extends Application {
 			// After fade out, load actual content
 			fadeOut.setOnFinished((e) -> {
 				try {
-					Parent root1 = FXMLLoader.load(getClass().getResource("/views/fxml/login_and_sign_up.fxml"));
-					Scene scene1 = new Scene(root1); // Đã sửa lỗi từ 'Sence' thành 'Scene'
-					primaryStage.setScene(scene1);
-					primaryStage.setTitle("Login/Register"); // Đặt tiêu đề cho cửa sổ nếu muốn
-					primaryStage.show();
+					HomeScreenHandler homeHandler = new HomeScreenHandler(primaryStage, Configs.HOME_PATH);
+//					HomeScreenHandler._instance = homeHandler;
+					homeHandler.setScreenTitle("Home Screen Guest");
+					homeHandler.setImage();
+					homeHandler.show();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

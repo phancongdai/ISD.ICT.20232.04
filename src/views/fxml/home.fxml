@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="788.0" maxWidth="1326.0" minHeight="788.0" minWidth="1326.0" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="788.0" maxWidth="1326.0" minHeight="788.0" minWidth="1326.0" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="104.0" prefWidth="1326.0" style="-fx-background-color: #ccebff; -fx-border-color: #33adff;">
          <children>
@@ -30,6 +30,11 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
+                        <Button fx:id="signInButton" layoutX="127.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleSignInButtonClick" prefHeight="40.0" prefWidth="78.0" text="Sign In">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                      </children>
                   </Pane>
                </children>

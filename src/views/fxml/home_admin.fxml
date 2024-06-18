@@ -30,6 +30,11 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
+                        <Button fx:id="signOutBtn" layoutX="116.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleSignOutButton" prefHeight="40.0" prefWidth="79.0" text="Sign Out">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                             </children>
                         </Pane>
                     </children>
@@ -62,8 +67,8 @@
                     <children>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="addItemBtn" layoutX="48.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddItem" text="Add Item" />
-                        <Button fx:id="manageInvoiceBtn" layoutX="20.0" layoutY="63.0" mnemonicParsing="false" text="Manage Invoice List" />
+                        <Button fx:id="addItemBtn" layoutX="23.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleAddItem" prefHeight="33.0" prefWidth="121.0" text="Add Item" />
+                        <Button fx:id="manageInvoiceBtn" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="121.0" text="Manage Invoice List" />
                      </children></Pane>
                     </children>
                 </VBox>

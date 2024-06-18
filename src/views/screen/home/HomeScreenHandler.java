@@ -6,8 +6,11 @@ import controller.InvoiceListController;
 import controller.ViewCartController;
 import entity.cart.Cart;
 import entity.media.Media;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +26,8 @@ import views.screen.cart.CartScreenHandler;
 import views.screen.invoicelist.InvoiceListHandler;
 import views.screen.media.MediaDetailHandler;
 import views.screen.popup.PopupScreen;
+import views.screen.SessionManager;
+import javafx.scene.Scene;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +40,8 @@ import java.util.logging.Logger;
 public class HomeScreenHandler extends BaseScreenHandler implements Initializable{
 
     public static Logger LOGGER = Utils.getLogger(HomeScreenHandler.class.getName());
-
+    @FXML
+    private Button signInButton;
     @FXML
     private Label numMediaInCart;
 
@@ -91,6 +97,11 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     @Override
     public void show() {
         numMediaInCart.setText(String.valueOf(Cart.getCart().getListMedia().size()) + " media");
+        if (SessionManager.isLoggedIn()) {
+            signInButton.setText("Sign out");
+        } else {
+            signInButton.setText("Sign in");
+        }
         super.show();
     }
     private int currentPage = 0;
@@ -125,6 +136,42 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         int currentDisplayPage = currentPage + 1;
         currentPageLabel.setText("Page " + currentDisplayPage + " of " + totalPages);
         return displayedItems;
+    }
+    @FXML
+    public void handleSignInButtonClick(ActionEvent event) {
+        // Lấy văn bản hiện tại của nút
+        String currentText = signInButton.getText();
+
+        // Thay đổi văn bản dựa trên trạng thái hiện tại
+        if ("Sign in".equals(currentText)) {
+            signInButton.setText("Sign out");
+            Parent root1 = null;
+            try {
+                //Tải màn hình để đăng nhập
+                root1 = FXMLLoader.load(getClass().getResource("/views/fxml/login_and_sign_up.fxml"));
+                Scene scene1 = new Scene(root1);
+                stage.setScene(scene1);
+                stage.setTitle("Login/Register");
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            //ở đây tôi sẽ thực hện hành động đăng xuất
+            signInButton.setText("Sign in");
+            //Xóa trạng thái đăng nhập của người dùng
+            SessionManager.setLoggedIn(false);
+            HomeScreenHandler homeHandler = null;
+            try {
+                //Chuyển trả về màn hình ban đầu là mà hình có nút Sign in
+                homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+                homeHandler.setScreenTitle("Home Screen Guest");
+                homeHandler.setImage();
+                homeHandler.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override

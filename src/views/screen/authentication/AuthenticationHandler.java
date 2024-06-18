@@ -20,6 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import utils.Configs;
+import views.screen.SessionManager;
 import views.screen.home.HomeScreenHandler;
 import views.screen.home_admin.AdminHomeScreenHandler;
 
@@ -93,13 +94,15 @@ public class AuthenticationHandler implements Initializable {
                 } else {
                     Stage stage = (Stage) login_btn.getScene().getWindow();
                     if (user.getId() != 0) {
+                        SessionManager.setLoggedIn(true);
                         HomeScreenHandler homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
-                        homeHandler.setScreenTitle("Home Screen");
+                        homeHandler.setScreenTitle("Home Screen Customer");
                         homeHandler.setImage();
                         homeHandler.show();
                     } else {
+                        SessionManager.setLoggedIn(true);
                         AdminHomeScreenHandler homeHandler = new AdminHomeScreenHandler(stage, Configs.HOME_ADMIN_PATH);
-                        homeHandler.setScreenTitle("Home Screen");
+                        homeHandler.setScreenTitle("Home Screen Admin");
                         homeHandler.setImage();
                         homeHandler.show();
                     }

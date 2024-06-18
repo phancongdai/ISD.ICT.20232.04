@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenAdminHandler;
+import views.screen.SessionManager;
+import views.screen.home.HomeScreenHandler;
 import views.screen.invoicelist.InvoiceListAdminHandler;
 import views.screen.popup.PopupScreen;
 import javafx.event.ActionEvent;
@@ -35,7 +37,8 @@ import java.util.logging.Logger;
 public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements Initializable {
 
     public static Logger LOGGER = Utils.getLogger(AdminHomeScreenHandler.class.getName());
-
+    @FXML
+    private Button signOutBtn;
     @FXML
     private ImageView aimsImage;
 
@@ -101,6 +104,19 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
             currentPage--;
             List<MediaAdminHandler> displayedItems = updateMediaDisplay(this.displayedItems);
             addMediaHome(displayedItems);
+        }
+    }
+    @FXML
+    public void handleSignOutButton(ActionEvent event) {
+        SessionManager.setLoggedIn(false);
+        HomeScreenHandler homeHandler = null;
+        try {
+            homeHandler = new HomeScreenHandler(stage, Configs.HOME_PATH);
+            homeHandler.setScreenTitle("Home Screen Guest");
+            homeHandler.setImage();
+            homeHandler.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
