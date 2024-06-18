@@ -4,7 +4,9 @@ import controller.AdminCRUDController;
 import controller.HomeController;
 import controller.InvoiceListController;
 import entity.db.AIMSDB;
+import entity.media.IMediaRepository;
 import entity.media.Media;
+import entity.media.MediaRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -196,7 +198,8 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         }
         String type = typeResult.get();
 
-        AdminCRUDController controller = new AdminCRUDController();
+        IMediaRepository mediaRepository = new MediaRepository();
+        AdminCRUDController controller = new AdminCRUDController(mediaRepository);
         controller.addNewMedia(title, type, category, "assets/images/book/book2.jpg", price, quantity);
 
         refreshMediaList();
@@ -221,7 +224,7 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
             this.homeItems = new ArrayList<>();
             for (Object object : medium) {
                 Media media = (Media)object;
-                MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this);
+                MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminCRUDController(new MediaRepository()));
                 this.homeItems.add(m1);
             }
             this.displayedItems = this.homeItems;
@@ -262,7 +265,7 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
             this.homeItems = new ArrayList<>();
             for (Object object : medium) {
                 Media media = (Media) object;
-                MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this);
+                MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminCRUDController(new MediaRepository()));
                 this.homeItems.add(m1);
             }
 
@@ -399,7 +402,8 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         List<MediaAdminHandler> mediaHandlerList = new ArrayList<>();
         for (Object item : items) {
             Media media = (Media) item ;
-            MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this);
+            MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminCRUDController(new MediaRepository()));
+
             mediaHandlerList.add(m1);
         }
         return mediaHandlerList;

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaRepository {
+public class MediaRepository implements IMediaRepository{
 
     public Media getMediaById(int id) throws SQLException {
         String sql = "SELECT * FROM Media WHERE id = ?";
@@ -48,7 +48,7 @@ public class MediaRepository {
     }
 
     public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
-        String sql = "INSERT INTO Media (title, category, price, quantity, type, imageURL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Media (title, category, price, quantity, type, imageURL) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
         stm.setString(1, title);
         stm.setString(2, category);

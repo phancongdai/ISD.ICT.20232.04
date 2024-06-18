@@ -1,7 +1,6 @@
 package views.screen.home_admin;
 
 import controller.AdminCRUDController;
-import entity.db.AIMSDB;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,8 +15,6 @@ import views.screen.FXMLScreenHandler;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -44,19 +41,17 @@ public class MediaAdminHandler extends FXMLScreenHandler {
     @FXML
     private Button updateItemBtn;
 
-    private Media media;
-    private AdminHomeScreenHandler home;
-    private Connection connect;
-    private PreparedStatement prepare;
+    private final Media media;
+    private final AdminHomeScreenHandler home;
+    private final AdminCRUDController adminCRUDController;
 
-    private AdminCRUDController adminCRUDController;
+    private static final Logger LOGGER = Utils.getLogger(MediaAdminHandler.class.getName());
 
-    private static Logger LOGGER = Utils.getLogger(MediaAdminHandler.class.getName());
-
-    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home) throws SQLException, IOException {
+    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home, AdminCRUDController adminCRUDController) throws IOException {
         super(screenPath);
         this.media = media;
         this.home = home;
+        this.adminCRUDController = adminCRUDController;
 
         setMediaInfo();
 
@@ -65,25 +60,24 @@ public class MediaAdminHandler extends FXMLScreenHandler {
                 handleDeleteItem();
             } catch (SQLException ex) {
                 LOGGER.severe("Error deleting media: " + ex.getMessage());
-                ex.printStackTrace();
             }
         });
+
         updateItemBtn.setOnAction(e -> {
             try {
                 handleUpdateItem();
             } catch (SQLException ex) {
-                LOGGER.severe("Error update media: " + ex.getMessage());
-                ex.printStackTrace();
+                LOGGER.severe("Error updating media: " + ex.getMessage());
             }
         });
     }
 
-    public Media getMedia(){
+    public Media getMedia() {
         return media;
     }
 
-    private void setMediaInfo() throws SQLException {
-        // set the cover image of media
+    private void setMediaInfo() {
+        // Set the cover image of media
         File file = new File(media.getImageURL());
         Image image = new Image(file.toURI().toString());
         mediaImage.setFitHeight(160);
@@ -97,24 +91,12 @@ public class MediaAdminHandler extends FXMLScreenHandler {
         setImage(mediaImage, media.getImageURL());
     }
 
-    private void handleAddNewItem() throws SQLException {
-        //TODO: Cần các thông tin để truyền vào hàm
-        String title = "Test";
-        String type = "Book";
-        String category = "Romance";
-        String imgUrl = "img url";
-        double price = 100;
-        int quantity = 10;
-        adminCRUDController.addNewMedia(title, type, category, imgUrl, price, quantity);
-    }
-
     private void handleDeleteItem() throws SQLException {
-        if (adminCRUDController == null) adminCRUDController = new AdminCRUDController();
         // Confirm box
         int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?", "Confirm Deletion",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-        // If user cancel
+        // If user cancels
         if (response == JOptionPane.NO_OPTION || response == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -126,8 +108,6 @@ public class MediaAdminHandler extends FXMLScreenHandler {
     }
 
     private void handleUpdateItem() throws SQLException {
-        if (adminCRUDController == null) adminCRUDController = new AdminCRUDController();
-
         // New price
         TextInputDialog priceDialog = new TextInputDialog(mediaPrice.getText());
         priceDialog.setTitle("Update Media Price");
@@ -155,7 +135,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (response == JOptionPane.YES_OPTION) {
-            adminCRUDController.changeQuantity(media.getId(), Integer.parseInt(priceResult.get()));
+            adminCRUDController.changeQuantity(media.getId(), Integer.parseInt(availResult.get()));
             adminCRUDController.changePrice(media.getId(), Integer.parseInt(priceResult.get()));
         }
 

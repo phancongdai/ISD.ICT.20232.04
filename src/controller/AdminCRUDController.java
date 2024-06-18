@@ -1,15 +1,17 @@
 package controller;
 
+import entity.media.IMediaRepository;
 import entity.media.Media;
-import entity.media.MediaRepository;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class AdminCRUDController extends BaseController {
-    MediaRepository mediaRepo = new MediaRepository();
+    private IMediaRepository mediaRepo;
 
-    public AdminCRUDController() throws SQLException {}
+    public AdminCRUDController(IMediaRepository mediaRepo) {
+        this.mediaRepo = mediaRepo;
+    }
 
     public List<Media> getAllBooks() throws SQLException {
         return mediaRepo.getMediaByType("book");
@@ -37,8 +39,5 @@ public class AdminCRUDController extends BaseController {
 
     public void deleteMedia(int id) throws SQLException {
         mediaRepo.deleteMediaById(id);
-    }
-
-    public void approveInvoice(Boolean approved) throws SQLException {
     }
 }
