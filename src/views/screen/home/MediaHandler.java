@@ -34,8 +34,8 @@ public class MediaHandler extends FXMLScreenHandler{
     @FXML
     protected Label mediaAvail;
 
-    @FXML
-    protected Spinner<Integer> spinnerChangeNumber;
+   // @FXML
+    //protected Spinner<Integer> spinnerChangeNumber;
 
     @FXML
     protected Button addToCartBtn;
@@ -53,40 +53,45 @@ public class MediaHandler extends FXMLScreenHandler{
         this.home = home;
         // Control coupling
         addToCartBtn.setOnMouseClicked(event -> {
-            try {
-                if (spinnerChangeNumber.getValue() > media.getQuantity()) throw new MediaNotAvailableException();
-                Cart cart = Cart.getCart();
-                // Increase the quantity if already in Cart
-                CartMedia mediaInCart = home.getBController().checkMediaInCart(media);
-                if (mediaInCart != null) {
-                    System.out.println("Media in cart");
-                    mediaInCart.setQuantity(mediaInCart.getQuantity() + spinnerChangeNumber.getValue());
-                }else{
-                    System.out.println("No media in cart");
-                    CartMedia cartMedia = new CartMedia(media, cart, spinnerChangeNumber.getValue(), media.getPrice());
-                    cart.getListMedia().add(cartMedia);
-                    LOGGER.info("Added " + cartMedia.getQuantity() + " " + media.getTitle() + " to cart");
-                }
-
-                // subtract the quantity and redisplay
-                media.setQuantity(media.getQuantity() - spinnerChangeNumber.getValue());
-                mediaAvail.setText(String.valueOf(media.getQuantity()));
-
-                // Content coupling
-                home.getNumMediaCartLabel().setText(cart.getTotalMedia() + " media");
-                PopupScreen.success("The media " + media.getTitle() + " added to Cart");
-            } catch (MediaNotAvailableException exp) {
-                try {
-                    String message = "Not enough media:\nRequired: " + spinnerChangeNumber.getValue() + "\nAvail: " + media.getQuantity();
-                    LOGGER.severe(message);
-                    PopupScreen.error(message);
-                } catch (Exception e) {
-                    LOGGER.severe("Cannot add media to cart: ");
-                }
-
-            } catch (Exception e) {
-                LOGGER.severe("Cannot add media to cart: " + e.getMessage());
+            Cart cart = Cart.getCart();
+            CartMedia mediaInCart = home.getBController().checkMediaInCart(media);
+            if (mediaInCart == null) {
+                cart.getListMedia().add(new CartMedia(media, 1, media.getPrice()));
             }
+            home.getNumMediaCartLabel().setText(String.valueOf(cart.getTotalMedia() + " media"));
+
+//            try {
+//                System.out.println(spinnerChangeNumber.getValue() + " and "+ media.getQuantity());
+//                if (spinnerChangeNumber.getValue() > media.getQuantity()) throw new MediaNotAvailableException("Media is not enough!");
+//                Cart cart = Cart.getCart();
+//                CartMedia mediaInCart = home.getBController().checkMediaInCart(media);
+//                if (mediaInCart != null) {
+//                    mediaInCart.setQuantity(mediaInCart.getQuantity() + 1);
+//                }else{
+//                    CartMedia cartMedia = new CartMedia(media, cart, spinnerChangeNumber.getValue(), media.getPrice());
+//                    cart.getListMedia().add(cartMedia);
+//                    LOGGER.info("Added " + cartMedia.getQuantity() + " " + media.getTitle() + " to cart");
+//                }
+//
+//                // subtract the quantity and redisplay
+//                media.setQuantity(media.getQuantity() - spinnerChangeNumber.getValue());
+//                mediaAvail.setText(String.valueOf(media.getQuantity()));
+//                // Content coupling
+//                home.getNumMediaCartLabel().setText(String.valueOf(cart.getTotalMedia() + " media"));
+//                PopupScreen.success("The media " + media.getTitle() + " added to Cart");
+//            } catch (MediaNotAvailableException exp) {
+//                try {
+//                    String message = "Not enough media:\nRequired: " + spinnerChangeNumber.getValue() + "\nAvail: " + media.getQuantity();
+//                    LOGGER.severe(message);
+//                    PopupScreen.error(message);
+//                } catch (Exception e) {
+//                    LOGGER.severe("Cannot add media to cart: ");
+//                }
+//
+//            } catch (Exception exp) {
+//                LOGGER.severe("Cannot add media to cart: ");
+//                exp.printStackTrace();
+//            }
         });
 
         btnDetail.setOnMouseClicked(e -> {
@@ -100,7 +105,7 @@ public class MediaHandler extends FXMLScreenHandler{
         return media;
     }
 
-    private void setMediaInfo() {
+    private void setMediaInfo() throws SQLException {
         // set the cover image of media
         File file = new File(media.getImageURL());
         Image image = new Image(file.toURI().toString());
@@ -111,10 +116,6 @@ public class MediaHandler extends FXMLScreenHandler{
         mediaTitle.setText(media.getTitle());
         mediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
         mediaAvail.setText(Integer.toString(media.getQuantity()));
-        spinnerChangeNumber.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1)
-        );
-
         setImage(mediaImage, media.getImageURL());
     }
 

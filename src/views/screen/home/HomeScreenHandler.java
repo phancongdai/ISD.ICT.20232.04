@@ -111,7 +111,6 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     private void showNextMedia(MouseEvent event) {
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, displayedItems.size());
-
         if (endIndex < displayedItems.size()) {
             currentPage++;
             List<MediaHandler> displayedItems = updateMediaDisplay(this.displayedItems);

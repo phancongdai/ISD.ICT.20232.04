@@ -210,13 +210,11 @@ public class CartScreenHandler extends BaseScreenHandler {
 	private void displayCartWithMediaAvailability(){
 		// clear all old cartMedia
 		vboxCart.getChildren().clear();
-
 		// get list media of cart after check availability
 		List lstMedia = getBController().getListCartMedia();
 
 		try {
 			for (Object cm : lstMedia) {
-
 				// display the attribute of vboxCart media
 				CartMedia cartMedia = (CartMedia) cm;
 				MediaHandler mediaCartScreen = new MediaHandler(Configs.CART_MEDIA_PATH, this);

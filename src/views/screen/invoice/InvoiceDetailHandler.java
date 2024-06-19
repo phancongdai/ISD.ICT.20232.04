@@ -16,6 +16,7 @@ import utils.Configs;
 import views.screen.BaseScreenHandler;
 import views.screen.home.HomeScreenHandler;
 import views.screen.invoicelist.InvoiceListHandler;
+import views.screen.popup.PopupScreen;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +94,9 @@ public class InvoiceDetailHandler extends BaseScreenHandler {
         }
         System.out.println(orderid);
         List lst = getOrderMedia(orderid);
+        if(lst==null) {
+            PopupScreen.error("This invoice contains a deleted media!");
+        }
         System.out.println(lst);
         lst.forEach(orderMedia -> {
             try {
@@ -130,25 +134,17 @@ public class InvoiceDetailHandler extends BaseScreenHandler {
                 int quantity = resultset.getInt("quantity");
                 int mediaid = resultset.getInt("mediaID");
                 Media media = getMediaById(mediaid);
+                if(media==null) {
+                    //PopupScreen.error("Invoice contains a deleted media!\nLet's see another invoice");
+                    return null;
+                }
                 OrderMedia orderMedia = new OrderMedia(media, quantity, media.getPrice());
                 ordermedialist.add(orderMedia);
-//                String sql1 = "SELECT * FROM Media where id = ?";
-//                PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
-//                preparedStatement1.setInt(1, mediaid);
-//                ResultSet res = preparedStatement1.executeQuery();
-//                if (res.next()) { // Check if there's a result before creating Media object
-//                    System.out.println(res.getInt("id") + " " +res.getString("imageUrl"));
-//                    System.out.println(mediaid);
-//                    Media media = getMediaById(res.getInt("id"));
-//                    System.out.println(media);
-//                    OrderMedia orderMedia = new OrderMedia(media, quantity, res.getInt("price") * quantity);
-//                    ordermedialist.add(orderMedia);
-//                }
-//                res.close(); // Close inner result set after each iteration
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
+        }
+        finally {
             if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
