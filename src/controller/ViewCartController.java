@@ -9,17 +9,14 @@ import entity.cart.CartMedia;
 
 /**
  * This class controls the flow of events when users view the Cart
- * @author nguyenlm
+ * @author nguyendai
  */
-//funtional cohesion
 public class ViewCartController extends BaseController{
     
     /**
      * This method checks the available products in Cart
-     * @throws SQLException
-     * Data Coupling
      */
-    public void checkAvailabilityOfProduct() throws SQLException{
+    public void checkAvailabilityOfProduct() {
         Cart.getCart().checkAvailabilityOfProduct();
     }
 
@@ -29,8 +26,6 @@ public class ViewCartController extends BaseController{
      * Data Coupling
      */
     public int getCartSubtotal(){
-        int subtotal = Cart.getCart().calSubtotal();
-        return subtotal;
+        return Cart.getCart().calSubtotal();
     }
-
 }

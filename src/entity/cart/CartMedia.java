@@ -8,10 +8,6 @@ public class CartMedia {
     private int quantity;
     private int price;
 
-    public CartMedia(){
-
-    }
-
     public CartMedia(Media media, Cart cart, int quantity, int price) {
         this.media = media;
         this.quantity = quantity;

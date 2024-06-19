@@ -123,7 +123,7 @@ public class AuthenticationHandler implements Initializable {
                 || signup_password.getText().isEmpty() || signup_cPassword.getText().isEmpty()) {
             alert.errorMessage("All fields are neccessary to be filled !");
         } // Check matched password
-        else if (Objects.equals(signup_cPassword.getText(), signup_password.getText())) {
+        else if (!Objects.equals(signup_cPassword.getText(), signup_password.getText())) {
             alert.errorMessage("Password does not match !");
         } // Check password length
         else if (signup_password.getText().length() < 8) {

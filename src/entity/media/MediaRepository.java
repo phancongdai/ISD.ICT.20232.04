@@ -66,6 +66,15 @@ public class MediaRepository implements IMediaRepository{
         stm.executeUpdate();
     }
 
+    private List<Media> extractMediaListFromResultSet(ResultSet res) throws SQLException {
+        List<Media> mediaList = new ArrayList<>();
+        while (res.next()) {
+            Media media = extractMediaFromResultSet(res);
+            mediaList.add(media);
+        }
+        return mediaList;
+    }
+
     private Media extractMediaFromResultSet(ResultSet res) throws SQLException {
         return new Media(
                 res.getInt("id"),
@@ -76,14 +85,5 @@ public class MediaRepository implements IMediaRepository{
                 res.getString("type"),
                 res.getString("imageURL")
         );
-    }
-
-    private List<Media> extractMediaListFromResultSet(ResultSet res) throws SQLException {
-        List<Media> mediaList = new ArrayList<>();
-        while (res.next()) {
-            Media media = extractMediaFromResultSet(res);
-            mediaList.add(media);
-        }
-        return mediaList;
     }
 }

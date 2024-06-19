@@ -56,12 +56,13 @@ public class MediaHandler extends FXMLScreenHandler{
             try {
                 if (spinnerChangeNumber.getValue() > media.getQuantity()) throw new MediaNotAvailableException();
                 Cart cart = Cart.getCart();
-                // if media already in cart then we will increase the quantity by 1 instead of create the new cartMedia
-                // Content coupling
+                // Increase the quantity if already in Cart
                 CartMedia mediaInCart = home.getBController().checkMediaInCart(media);
                 if (mediaInCart != null) {
-                    mediaInCart.setQuantity(mediaInCart.getQuantity() + 1);
+                    System.out.println("Media in cart");
+                    mediaInCart.setQuantity(mediaInCart.getQuantity() + spinnerChangeNumber.getValue());
                 }else{
+                    System.out.println("No media in cart");
                     CartMedia cartMedia = new CartMedia(media, cart, spinnerChangeNumber.getValue(), media.getPrice());
                     cart.getListMedia().add(cartMedia);
                     LOGGER.info("Added " + cartMedia.getQuantity() + " " + media.getTitle() + " to cart");
@@ -70,8 +71,9 @@ public class MediaHandler extends FXMLScreenHandler{
                 // subtract the quantity and redisplay
                 media.setQuantity(media.getQuantity() - spinnerChangeNumber.getValue());
                 mediaAvail.setText(String.valueOf(media.getQuantity()));
+
                 // Content coupling
-                home.getNumMediaCartLabel().setText(String.valueOf(cart.getTotalMedia() + " media"));
+                home.getNumMediaCartLabel().setText(cart.getTotalMedia() + " media");
                 PopupScreen.success("The media " + media.getTitle() + " added to Cart");
             } catch (MediaNotAvailableException exp) {
                 try {
@@ -82,9 +84,8 @@ public class MediaHandler extends FXMLScreenHandler{
                     LOGGER.severe("Cannot add media to cart: ");
                 }
 
-            } catch (Exception exp) {
-                LOGGER.severe("Cannot add media to cart: ");
-                exp.printStackTrace();
+            } catch (Exception e) {
+                LOGGER.severe("Cannot add media to cart: " + e.getMessage());
             }
         });
 
@@ -99,7 +100,7 @@ public class MediaHandler extends FXMLScreenHandler{
         return media;
     }
 
-    private void setMediaInfo() throws SQLException {
+    private void setMediaInfo() {
         // set the cover image of media
         File file = new File(media.getImageURL());
         Image image = new Image(file.toURI().toString());
