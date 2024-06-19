@@ -135,8 +135,9 @@ public class MediaAdminHandler extends FXMLScreenHandler {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (response == JOptionPane.YES_OPTION) {
+
             adminCRUDController.changeQuantity(media.getId(), Integer.parseInt(availResult.get()));
-            adminCRUDController.changePrice(media.getId(), Integer.parseInt(priceResult.get()));
+            adminCRUDController.changePrice(media.getId(), Integer.parseInt(priceResult.get().replaceAll("[^0-9]", "").trim()));
         }
 
         home.refreshMediaList();
