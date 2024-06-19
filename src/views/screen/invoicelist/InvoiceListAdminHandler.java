@@ -88,7 +88,7 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
     private Button createStatusButton(Invoice invoice) {
         Button statusButton = new Button(invoice.getStatus());
 
-        if ("CREATED".equals(invoice.getStatus())) {
+        if ("PAYMENT COMPLETED".equals(invoice.getStatus())) {
             statusButton.setOnAction(event -> {
                 // Create a context menu with options
                 ContextMenu contextMenu = new ContextMenu();
@@ -96,9 +96,9 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
                 MenuItem rejectItem = new MenuItem("REJECT");
 
                 approveItem.setOnAction(e -> {
-                    invoice.setStatus("PAYMENT COMPLETED");
-                    updateInvoiceStatus(invoice, "PAYMENT COMPLETED");
-                    statusButton.setText("PAYMENT COMPLETED");
+                    invoice.setStatus("APPROVED");
+                    updateInvoiceStatus(invoice, "APPROVED");
+                    statusButton.setText("APPROVED");
                     refreshTable();
                 });
 
