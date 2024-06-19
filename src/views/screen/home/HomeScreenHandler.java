@@ -96,7 +96,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     @Override
     public void show() {
-        numMediaInCart.setText(String.valueOf(Cart.getCart().getListMedia().size()) + " media");
+        numMediaInCart.setText(Cart.getCart().getListMedia().size() + " media");
         if (SessionManager.isLoggedIn()) {
             signInButton.setText("Sign out");
         } else {
@@ -185,8 +185,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             }
             this.displayedItems = this.homeItems;
         }catch (SQLException | IOException e){
-            LOGGER.info("Errors occured: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.info("Initialize errors: " + e.getMessage());
         }
 
         // Home button
@@ -304,8 +303,8 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         if (filteredItems.isEmpty()) {
             try {
                 PopupScreen.error("No matching products.");
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         } else {
             currentPage = 0;
@@ -317,8 +316,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     public List<MediaHandler> filterMediaByKeyWord(String keyword, List<MediaHandler> items) {
         List<MediaHandler> filteredItems = new ArrayList<>();
-        for (Object item : items) {
-            MediaHandler media = (MediaHandler) item;
+        for (MediaHandler media : items) {
             if (media.getMedia().getTitle().toLowerCase().contains(keyword)) {
                 filteredItems.add(media);
             }
@@ -332,9 +330,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             mediaDetailHandler = new MediaDetailHandler(this.stage, media,Configs.MEDIA_DETAIL_PATH);
             mediaDetailHandler.requestToDetail(this);
             mediaDetailHandler.setHomeScreenHandler(this);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        } catch (SQLException ex) {
+        } catch (IOException | SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -342,8 +338,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     public List<MediaHandler> convertMediaHandlerList(List<Media> items) throws SQLException, IOException {
         List<MediaHandler> mediaHandlerList = new ArrayList<>();
-        for (Object item : items) {
-            Media media = (Media) item ;
+        for (Media media : items) {
             MediaHandler m1 = new MediaHandler(Configs.HOME_MEDIA_PATH, media, this);
             mediaHandlerList.add(m1);
         }

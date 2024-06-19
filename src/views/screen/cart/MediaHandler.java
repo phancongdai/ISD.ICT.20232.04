@@ -90,6 +90,7 @@ public class MediaHandler extends FXMLScreenHandler {
 			try {
 				Cart.getCart().removeCartMedia(cartMedia); // update user cart
 				cartScreen.updateCart(); // re-display user cart
+				cartMedia.getMedia().setQuantity(cartMedia.getMedia().getQuantity() + cartMedia.getQuantity());
 				LOGGER.info("Deleted " + cartMedia.getMedia().getTitle() + " from the cart");
 			} catch (SQLException exp) {
 				exp.printStackTrace();
@@ -103,7 +104,7 @@ public class MediaHandler extends FXMLScreenHandler {
 	private void initializeSpinner(){
 		SpinnerValueFactory<Integer> valueFactory = //
 			new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
-		spinner = new Spinner<Integer>(valueFactory);
+		spinner = new Spinner<>(valueFactory);
 		spinner.setOnMouseClicked( e -> {
 //			int mediaid =  cartMedia.getMedia().getId();
 //			int quantity;

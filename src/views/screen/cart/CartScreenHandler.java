@@ -110,7 +110,7 @@ public class CartScreenHandler extends BaseScreenHandler {
 		setPreviousScreen(prevScreen);
 		setScreenTitle("Cart Screen");
 		//System.out.println(getBController().toString());
-		getBController().checkAvailabilityOfProduct();
+//		getBController().checkAvailabilityOfProduct();
 		displayCartWithMediaAvailability();
 		show();
 	}

@@ -1,15 +1,15 @@
 package entity.cart;
 
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.exception.MediaNotAvailableException;
 import entity.media.Media;
+import views.screen.popup.PopupScreen;
 
 public class Cart {
     
-    private List<CartMedia> lstCartMedia;
+    private List<CartMedia> listCartMedia;
     private static Cart cartInstance;
 
     public static Cart getCart(){
@@ -18,60 +18,63 @@ public class Cart {
     }
 
     private Cart(){
-        lstCartMedia = new ArrayList<>();
+        listCartMedia = new ArrayList<>();
     }
 
     public void addCartMedia(CartMedia cm){
-        lstCartMedia.add(cm);
+        listCartMedia.add(cm);
     }
 
     public void removeCartMedia(CartMedia cm){
-        lstCartMedia.remove(cm);
+        listCartMedia.remove(cm);
     }
 
     public List getListMedia(){
-        return lstCartMedia;
+        return listCartMedia;
     }
 
     public void emptyCart(){
-        lstCartMedia.clear();
+        listCartMedia.clear();
     }
 
     public int getTotalMedia(){
         int total = 0;
-        for (Object obj : lstCartMedia) {
-            CartMedia cm = (CartMedia) obj;
-            total += cm.getQuantity();
+        for (CartMedia cartMedia : listCartMedia) {
+            total += cartMedia.getQuantity();
         }
         return total;
     }
 
     public int calSubtotal(){
         int total = 0;
-        for (Object obj : lstCartMedia) {
-            CartMedia cm = (CartMedia) obj;
-            total += cm.getPrice()*cm.getQuantity();
+        for (CartMedia cartMedia : listCartMedia) {
+            total += cartMedia.getPrice()*cartMedia.getQuantity();
         }
         return total;
     }
 
-    public void checkAvailabilityOfProduct() throws SQLException{
-        boolean allAvai = true;
-        for (Object object : lstCartMedia) {
-            CartMedia cartMedia = (CartMedia) object;
-            //System.out.println(object);
+    public void checkAvailabilityOfProduct() {
+        boolean allAvail = true;
+        for (CartMedia cartMedia : listCartMedia) {
             int requiredQuantity = cartMedia.getQuantity();
-            System.out.println(requiredQuantity);
             int availQuantity = cartMedia.getMedia().getQuantity();
-            System.out.println(availQuantity);
-            if (requiredQuantity > availQuantity) allAvai = false;
-            //System.out.println(allAvai);
+            if (requiredQuantity > availQuantity) {
+                System.out.println(requiredQuantity + " > " + availQuantity);
+                System.out.println(cartMedia.getMedia().getTitle() + " " + cartMedia.getMedia().getQuantity());
+                allAvail = false;
+            }
         }
-        //if (!allAvai) throw new MediaNotAvailableException("Some media not available");
+        if (!allAvail) {
+            try {
+                PopupScreen.error("Some media is not available");
+            } catch (IOException e) {
+                System.out.println("checkAvailabilityOfProduct error: " + e.getMessage());
+            }
+        }
     }
 
     public CartMedia checkMediaInCart(Media media){
-        for (CartMedia cartMedia : lstCartMedia) {
+        for (CartMedia cartMedia : listCartMedia) {
             if (cartMedia.getMedia().getId() == media.getId()) return cartMedia;
         }
         return null;
