@@ -62,7 +62,6 @@ public class InvoiceListHandler extends BaseScreenHandler {
         super(stage, screenPath);
         CleanInvoiceList();
         loadData();
-
         File file = new File("assets/images/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
@@ -139,6 +138,7 @@ public class InvoiceListHandler extends BaseScreenHandler {
         dataInvoice = Invoice.getListInvoice();
         initializeTableColumns();
         populateTable();
+        //tableView.lookup()
     }
     public void CleanInvoiceList() throws SQLException {
         String sql = "DELETE FROM Invoice WHERE VNPayId = ?;";

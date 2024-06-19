@@ -3,7 +3,6 @@ package entity.cart;
 import entity.media.Media;
 
 public class CartMedia {
-    
     private Media media;
     private int quantity;
     private int price;
@@ -12,7 +11,7 @@ public class CartMedia {
 
     }
 
-    public CartMedia(Media media, Cart cart, int quantity, int price) {
+    public CartMedia(Media media, int quantity, int price) {
         this.media = media;
         this.quantity = quantity;
         this.price = price;

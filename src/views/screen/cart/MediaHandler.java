@@ -2,6 +2,9 @@ package views.screen.cart;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -10,6 +13,7 @@ import common.exception.MediaUpdateException;
 import common.exception.ViewCartException;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
+import entity.db.AIMSDB;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -101,22 +105,42 @@ public class MediaHandler extends FXMLScreenHandler {
 			new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
 		spinner = new Spinner<Integer>(valueFactory);
 		spinner.setOnMouseClicked( e -> {
+//			int mediaid =  cartMedia.getMedia().getId();
+//			int quantity;
+//			Connection connection = AIMSDB.getConnection();
+//			PreparedStatement preparedStatement = null;
+//			ResultSet res = null;
+//			String sql = "Select quantity From Media where id = ?";
+//            try {
+//				preparedStatement = connection.prepareStatement(sql);
+//				preparedStatement.setInt(1, mediaid);
+//				res =  preparedStatement.executeQuery();
+//				if(!res.next()) {
+//					System.out.println("Media "+ mediaid + " does not exist in database");
+//					preparedStatement.close();
+//				}
+//				quantity = Integer.parseInt(res.getString("quantity"));
+//            } catch (SQLException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//			System.out.println(quantity);
 			int numOfProd = this.spinner.getValue();
+			//System.out.println("numOfProd "+ numOfProd);
 			int remainQuantity = cartMedia.getMedia().getQuantity();
+			//System.out.println("remainQuantity "+ remainQuantity);
 			LOGGER.info("NumOfProd: " + numOfProd + " -- remainOfProd: " + remainQuantity);
 			if (numOfProd > remainQuantity){
 				LOGGER.info("product " + cartMedia.getMedia().getTitle() + " only remains " + remainQuantity + " (required " + numOfProd + ")");
 				labelOutOfStock.setText("Sorry, Only " + remainQuantity + " remain in stock");
 				spinner.getValueFactory().setValue(remainQuantity);
 				numOfProd = remainQuantity;
+			} else {
+				//cartMedia.setQuantity();
 			}
-
 			// update quantity of mediaCart in useCart
 			cartMedia.setQuantity(numOfProd);
-
 			// update the total of mediaCart
 			price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()));
-
 			// update subtotal and amount of Cart
 			cartScreen.updateCartAmount();
 

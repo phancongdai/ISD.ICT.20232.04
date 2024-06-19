@@ -26,6 +26,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class ShippingScreenHandler extends BaseScreenHandler implements Initializable {
 	@FXML
@@ -94,8 +95,9 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		order.setDeliveryInfo(messages);
 		if(order.getTypePayment().toLowerCase()=="rush order"){
 			String provincetmp = String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase();
-			System.out.println(String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase());
+			//System.out.println(String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase());
 			if(!provincetmp.equals("hà nội")) {
+				Logger.getLogger("Invalid delivery information for Rush Order").info(String.valueOf(order.getDeliveryInfo()));
 				PopupScreen.error("Your address is not available for Rush order delivery!");
 				return;
 			}
