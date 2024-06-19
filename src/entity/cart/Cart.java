@@ -59,11 +59,15 @@ public class Cart {
         boolean allAvai = true;
         for (Object object : lstCartMedia) {
             CartMedia cartMedia = (CartMedia) object;
+            //System.out.println(object);
             int requiredQuantity = cartMedia.getQuantity();
+            System.out.println(requiredQuantity);
             int availQuantity = cartMedia.getMedia().getQuantity();
+            System.out.println(availQuantity);
             if (requiredQuantity > availQuantity) allAvai = false;
+            //System.out.println(allAvai);
         }
-        if (!allAvai) throw new MediaNotAvailableException("Some media not available");
+        //if (!allAvai) throw new MediaNotAvailableException("Some media not available");
     }
 
     public CartMedia checkMediaInCart(Media media){

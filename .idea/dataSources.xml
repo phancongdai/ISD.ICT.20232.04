@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="aims [2]" uuid="10cfe675-f26d-493d-be5c-cbc09806113e">
+    <data-source source="LOCAL" name="aims" uuid="15e9e911-0cff-48c0-8bf7-4803f978569e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\ISD.ICT.20232.04\AIMS\assets\db\aims.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\phand\new_itss\assets\db\aims.db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>

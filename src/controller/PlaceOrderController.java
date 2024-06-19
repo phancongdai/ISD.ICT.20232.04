@@ -61,9 +61,8 @@ public class PlaceOrderController extends BaseController{
      * This method takes responsibility for processing the shipping info from user
      * @param info
      * @throws InterruptedException
-     * @throws IOException
      */
-    public void processDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException {
+    public void processDeliveryInfo(HashMap<String, String> info) throws InterruptedException {
         LOGGER.info("Process Delivery Info");
         LOGGER.info(info.toString());
         // Validate delivery info using DeliveryValidator
