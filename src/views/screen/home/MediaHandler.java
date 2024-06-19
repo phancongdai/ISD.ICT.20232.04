@@ -57,6 +57,17 @@ public class MediaHandler extends FXMLScreenHandler{
             CartMedia mediaInCart = home.getBController().checkMediaInCart(media);
             if (mediaInCart == null) {
                 cart.getListMedia().add(new CartMedia(media, 1, media.getPrice()));
+                try {
+                    PopupScreen.success(media.getTitle() + " is added to cart!", 3);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    PopupScreen.alter(media.getTitle()+ " exists in cart!", 3);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             home.getNumMediaCartLabel().setText(String.valueOf(cart.getTotalMedia() + " media"));
 

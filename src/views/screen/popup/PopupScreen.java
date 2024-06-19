@@ -44,20 +44,34 @@ public class PopupScreen extends BaseScreenHandler{
     }
 
     public static void success(String message) throws IOException{
-        popup(message, Configs.IMAGE_PATH + "/" + "tickgreen.png", true).show(true);
+        popup(message, Configs.IMAGE_PATH + "/" + "tickgreen.png", false).show(true);
     }
 
     public static void success(String message,double time) throws IOException{
-        popup(message, Configs.IMAGE_PATH + "/" + "tickgreen.png", true).show(true, time);
+        popup(message, Configs.IMAGE_PATH + "/" + "tickgreen.png", false).show(true, time);
     }
 
     public static void error(String message) throws IOException{
         popup(message, Configs.IMAGE_PATH + "/" + "tickerror.png", false).show(false);
     }
 
+    public static void error(String message, double time) throws IOException{
+        popup(message, Configs.IMAGE_PATH + "/" + "tickerror.png", false).show(true, time);
+    }
+
+
+    public static void alter(String message) throws IOException {
+        popup(message, Configs.IMAGE_PATH + "/" + "attention.png", false).show(false);
+    }
+
+    public static void alter(String message, double time) throws IOException {
+        popup(message, Configs.IMAGE_PATH + "/" + "attention.png", false).show(true, time);
+    }
+
     public static PopupScreen loading(String message) throws IOException{
         return popup(message, Configs.IMAGE_PATH + "/" + "loading.gif", true);
     }
+
 
     public void setImage(String path) {
         super.setImage(tickicon, path);

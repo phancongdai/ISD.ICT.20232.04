@@ -88,7 +88,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			// process and validate delivery info
 			getBController().processDeliveryInfo(messages);
 		} catch (InvalidDeliveryInfoException e) {
-			PopupScreen.error(e.getMessage());
+			PopupScreen.error(e.getMessage(), 3);
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
 		// calculate shipping fees
@@ -98,7 +98,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			//System.out.println(String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase());
 			if(!provincetmp.equals("hà nội")) {
 				Logger.getLogger("Invalid delivery information for Rush Order").info(String.valueOf(order.getDeliveryInfo()));
-				PopupScreen.error("Your address is not available for Rush order delivery!");
+				PopupScreen.error("Your address is not available for Rush order delivery!", 3);
 				return;
 			}
 		}

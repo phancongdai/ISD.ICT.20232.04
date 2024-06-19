@@ -1,7 +1,9 @@
 package views.screen.payment;
 
 import controller.PaymentController;
+import entity.db.AIMSDB;
 import entity.invoice.Invoice;
+import entity.media.Media;
 import entity.response.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +18,10 @@ import views.screen.BaseScreenHandler;
 import views.screen.invoice.InvoiceScreenHandler;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PaymentScreenHandler extends BaseScreenHandler {
 	public Response response;
@@ -59,11 +65,13 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 						ResultScreenHandler.show();
 						this.invoice.setPaypalId(response.getVnp_BankTranNo());
 						this.invoice.updateStatus("PAYMENT COMPLETED");
-
+						UpdateStock();
 					} catch (IOException e) {
 						throw new RuntimeException(e);
-					}
-				}
+					} catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 				if(!response.getVnp_ResponseCode().equals("00")){
 					try {
 						BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
@@ -99,5 +107,54 @@ public class PaymentScreenHandler extends BaseScreenHandler {
 			this.getPreviousScreen().show();
 		});
 		displayWebView();
+	}
+
+	public void UpdateStock() throws SQLException {
+		int invoiceId = invoice.getId();
+		Connection connection = AIMSDB.getConnection();
+		//String sql0 = "Select orderId From Invoice where id = ?";
+		int orderid;
+		String sql0 = "SELECT orderId FROM Invoice WHERE id = ?";
+		try (PreparedStatement preInvoice = connection.prepareStatement(sql0)) {
+			preInvoice.setInt(1, invoiceId);
+			try (ResultSet res0 = preInvoice.executeQuery()) {
+				if (res0.next()) {
+					orderid = res0.getInt(1);
+				} else {
+					throw new SQLException("Invoice with ID " + invoiceId + " not found.");
+				}
+			}
+		} catch (SQLException e) {
+			return;
+		}
+
+		String sql1 = "SELECT mediaID, quantity FROM OrderMedia WHERE orderID = ?";
+		try (PreparedStatement preOrder = connection.prepareStatement(sql1)) {
+			preOrder.setInt(1, orderid);
+			try (ResultSet res1 = preOrder.executeQuery()) {
+				while (res1.next()) {
+					int mediaid = res1.getInt("mediaID");
+					int quantity = res1.getInt("quantity");
+
+					String sql2 = "UPDATE Media SET quantity = quantity - ? WHERE id = ?";
+					try (PreparedStatement preMedia = connection.prepareStatement(sql2)) {
+						preMedia.setInt(1, quantity);
+						preMedia.setInt(2, mediaid);
+						int rowAffected = preMedia.executeUpdate();
+						if (rowAffected > 0) {
+							System.out.println("Media with ID " + mediaid + " updated successfully");
+						} else {
+							System.out.println("No media with ID " + mediaid + " exists");
+						}
+					} catch (SQLException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+
 	}
 }

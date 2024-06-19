@@ -95,7 +95,7 @@ public class InvoiceDetailHandler extends BaseScreenHandler {
         System.out.println(orderid);
         List lst = getOrderMedia(orderid);
         if(lst==null) {
-            PopupScreen.error("This invoice contains a deleted media!");
+            PopupScreen.error("This invoice contains a deleted media!",3);
         }
         System.out.println(lst);
         lst.forEach(orderMedia -> {
