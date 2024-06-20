@@ -9,17 +9,7 @@ import java.util.List;
 
 public class MediaRepository implements IMediaRepository{
 
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM Media WHERE id = ?";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        stm.setInt(1, id);
-        ResultSet res = stm.executeQuery();
-        if (res.next()) {
-            return extractMediaFromResultSet(res);
-        }
-        return null;
-    }
-
+    @Override
     public List<Media> getAllMedia() throws SQLException {
         String sql = "SELECT * FROM Media";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
@@ -27,6 +17,7 @@ public class MediaRepository implements IMediaRepository{
         return extractMediaListFromResultSet(res);
     }
 
+    @Override
     public List<Media> getMediaByType(String type) throws SQLException {
         String sql = "SELECT * FROM Media WHERE type = ?";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
@@ -35,6 +26,7 @@ public class MediaRepository implements IMediaRepository{
         return extractMediaListFromResultSet(res);
     }
 
+    @Override
     public void updateMediaFieldById(int id, String field, Object value) throws SQLException {
         String sql = "UPDATE Media SET " + field + " = ? WHERE id = ?";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
@@ -47,6 +39,7 @@ public class MediaRepository implements IMediaRepository{
         stm.executeUpdate();
     }
 
+    @Override
     public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
         String sql = "INSERT INTO Media (title, category, price, quantity, type, imageURL) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
@@ -59,6 +52,7 @@ public class MediaRepository implements IMediaRepository{
         stm.executeUpdate();
     }
 
+    @Override
     public void deleteMediaById(int id) throws SQLException {
         String sql = "DELETE FROM Media WHERE id = ?";
         PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);

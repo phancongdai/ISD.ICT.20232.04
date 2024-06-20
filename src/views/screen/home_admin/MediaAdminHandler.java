@@ -1,6 +1,6 @@
 package views.screen.home_admin;
 
-import controller.AdminCRUDController;
+import controller.AdminController;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,11 +43,11 @@ public class MediaAdminHandler extends FXMLScreenHandler {
 
     private final Media media;
     private final AdminHomeScreenHandler home;
-    private final AdminCRUDController adminCRUDController;
+    private final AdminController adminCRUDController;
 
     private static final Logger LOGGER = Utils.getLogger(MediaAdminHandler.class.getName());
 
-    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home, AdminCRUDController adminCRUDController) throws IOException {
+    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home, AdminController adminCRUDController) throws IOException {
         super(screenPath);
         this.media = media;
         this.home = home;

@@ -5,6 +5,7 @@ import java.util.List;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
 import entity.media.Media;
+import entity.media.MediaRepository;
 
 /**
  * This class is the base controller for our AIMS project

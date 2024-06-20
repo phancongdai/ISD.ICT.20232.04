@@ -4,25 +4,18 @@ import entity.media.IMediaRepository;
 import entity.media.Media;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AdminCRUDController extends BaseController {
-    private IMediaRepository mediaRepo;
+public class AdminController extends BaseController {
+    private final IMediaRepository mediaRepo;
 
-    public AdminCRUDController(IMediaRepository mediaRepo) {
+    public AdminController(IMediaRepository mediaRepo) {
         this.mediaRepo = mediaRepo;
     }
 
-    public List<Media> getAllBooks() throws SQLException {
-        return mediaRepo.getMediaByType("book");
-    }
-
-    public List<Media> getAllCDs() throws SQLException {
-        return mediaRepo.getMediaByType("cd");
-    }
-
-    public List<Media> getAllDvds() throws SQLException {
-        return mediaRepo.getMediaByType("dvd");
+    public List<Media> getAllMedia() throws SQLException {
+        return mediaRepo.getAllMedia();
     }
 
     public void changeQuantity(int id, int quantity) throws SQLException {
@@ -39,5 +32,15 @@ public class AdminCRUDController extends BaseController {
 
     public void deleteMedia(int id) throws SQLException {
         mediaRepo.deleteMediaById(id);
+    }
+
+    public List<Media> filterMediaByKeyWord(String keyword, List<Media> items) {
+        List<Media> filteredItems = new ArrayList<>();
+        for (Media item : items) {
+            if (item.getTitle().toLowerCase().contains(keyword)) {
+                filteredItems.add(item);
+            }
+        }
+        return filteredItems;
     }
 }
