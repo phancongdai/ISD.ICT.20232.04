@@ -113,7 +113,7 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
     }
 
     @FXML
-    private void handleAddItem(ActionEvent event) throws SQLException {
+    private void handleAddItem(ActionEvent event) {
         // Title
         TextInputDialog titleDialog = new TextInputDialog();
         titleDialog.setTitle("Add New Item");
@@ -193,6 +193,15 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         refreshMediaList();
     }
 
+    @FXML
+    void searchButtonClicked(MouseEvent event) throws IOException {
+        String searchText = searchField.getText().toLowerCase().trim();
+        List<Media> medium = getBController().getAllMedia();
+        List<Media> filteredMedia = getBController().filterMediaByKeyWord(searchText,medium);
+        List<MediaAdminHandler> filteredItems = convertMediaHandlerList(filteredMedia);
+        checkEmpty(filteredItems);
+    }
+
     private List<MediaAdminHandler> updateMediaDisplay( List<MediaAdminHandler> items) {
         int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, items.size());
@@ -211,11 +220,11 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
             List<Media> medium = getBController().getAllMedia();
             this.homeItems = new ArrayList<>();
             for (Media media : medium) {
-                MediaAdminHandler mediaAdminHandler = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminController(new MediaRepository()));
+                MediaAdminHandler mediaAdminHandler = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, getBController());
                 this.homeItems.add(mediaAdminHandler);
             }
             this.displayedItems = this.homeItems;
-        }catch (SQLException | IOException e){
+        }catch (IOException e){
             LOGGER.info("Initialization errors: " + e.getMessage());
         }
 
@@ -244,12 +253,11 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
     }
 
     public void refreshMediaList() {
-//        setBController(new HomeController());
         try {
             List<Media> medium = getBController().getAllMedia();
             this.homeItems = new ArrayList<>();
             for (Media media : medium) {
-                MediaAdminHandler mediaAdminHandler = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminController(new MediaRepository()));
+                MediaAdminHandler mediaAdminHandler = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, getBController());
                 this.homeItems.add(mediaAdminHandler);
             }
 
@@ -257,7 +265,7 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
             this.displayedItems = this.homeItems;
             List<MediaAdminHandler> displayedItems = updateMediaDisplay(this.homeItems);
             addMediaHome(displayedItems);
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             LOGGER.info("Refresh errors occurred: " + e.getMessage());
         }
     }
@@ -344,15 +352,6 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         menuButton.getItems().add(position, menuItem);
     }
 
-    @FXML
-    void searchButtonClicked(MouseEvent event) throws SQLException, IOException {
-        String searchText = searchField.getText().toLowerCase().trim();
-        List<Media> medium = getBController().getAllMedia();
-        List<Media> filteredMedia = getBController().filterMediaByKeyWord(searchText,medium);
-        List<MediaAdminHandler> filteredItems = convertMediaHandlerList(filteredMedia);
-        checkEmpty(filteredItems);
-    }
-
     private void checkEmpty(List<MediaAdminHandler> filteredItems) {
         if (filteredItems.isEmpty()) {
             try {
@@ -368,20 +367,10 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
         }
     }
 
-    public List<MediaAdminHandler> filterMediaByKeyWord(String keyword, List<MediaAdminHandler> items) {
-        List<MediaAdminHandler> filteredItems = new ArrayList<>();
-        for (MediaAdminHandler mediaAdminHandler : items) {
-            if (mediaAdminHandler.getMedia().getTitle().toLowerCase().contains(keyword)) {
-                filteredItems.add(mediaAdminHandler);
-            }
-        }
-        return filteredItems;
-    }
-
     public List<MediaAdminHandler> convertMediaHandlerList(List<Media> items) throws IOException {
         List<MediaAdminHandler> mediaHandlerList = new ArrayList<>();
         for (Media media : items) {
-            MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, new AdminController(new MediaRepository()));
+            MediaAdminHandler m1 = new MediaAdminHandler(Configs.HOME_MEDIA_ADMIN_PATH, media, this, getBController());
 
             mediaHandlerList.add(m1);
         }

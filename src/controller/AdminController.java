@@ -3,7 +3,6 @@ package controller;
 import entity.media.IMediaRepository;
 import entity.media.Media;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,23 +13,23 @@ public class AdminController extends BaseController {
         this.mediaRepo = mediaRepo;
     }
 
-    public List<Media> getAllMedia() throws SQLException {
+    public List<Media> getAllMedia()  {
         return mediaRepo.getAllMedia();
     }
 
-    public void changeQuantity(int id, int quantity) throws SQLException {
+    public void changeQuantity(int id, int quantity){
         mediaRepo.updateMediaFieldById(id, "quantity", quantity);
     }
 
-    public void changePrice(int id, int price) throws SQLException {
+    public void changePrice(int id, int price) {
         mediaRepo.updateMediaFieldById(id, "price", price);
     }
 
-    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
+    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) {
         mediaRepo.addNewMedia(title, type, category, imgUrl, price, quantity);
     }
 
-    public void deleteMedia(int id) throws SQLException {
+    public void deleteMedia(int id) {
         mediaRepo.deleteMediaById(id);
     }
 

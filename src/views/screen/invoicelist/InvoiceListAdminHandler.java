@@ -61,6 +61,16 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
         aimsImage.setOnMouseClicked(e -> adminHomeScreenHandler.show());
     }
 
+    public InvoiceListController getBController() {
+        return (InvoiceListController) super.getBController();
+    }
+
+    private void loadData() throws SQLException {
+        dataInvoice = Invoice.getListInvoice();
+        initializeTableColumns();
+        populateTable();
+    }
+
     private void initializeTableColumns() {
         // Map TableColumns to corresponding fields in Invoice class
         sttColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
@@ -136,20 +146,10 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
         tableView.refresh();
     }
 
-    public InvoiceListController getBController() {
-        return (InvoiceListController) super.getBController();
-    }
-
     public void requestToInvoiceList(BaseScreenAdminHandler prevScreen) throws SQLException {
         setPreviousScreen(prevScreen);
         setScreenTitle("Invoice List Screen");
         show();
-    }
-
-    private void loadData() throws SQLException {
-        dataInvoice = Invoice.getListInvoice();
-        initializeTableColumns();
-        populateTable();
     }
 
     private void populateTable() {
