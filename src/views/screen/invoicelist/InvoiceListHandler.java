@@ -31,7 +31,6 @@ import java.util.ArrayList;
 public class InvoiceListHandler extends BaseScreenHandler {
 
     private ArrayList<Invoice> dataInvoice;
-
     private HomeScreenHandler home;
 
     @FXML
@@ -58,14 +57,20 @@ public class InvoiceListHandler extends BaseScreenHandler {
     @FXML
     private TableColumn<Invoice, Button> invoice_detail;
 
+    private InvoiceListController invoiceListController;
+
     public InvoiceListHandler(Stage stage, String screenPath) throws IOException, SQLException {
         super(stage, screenPath);
+
+        // Initialize the controller
+        this.invoiceListController = new InvoiceListController();
+
         CleanInvoiceList();
         loadData();
         File file = new File("assets/images/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
-        // on mouse clicked, we back to home
+
         aimsImage.setOnMouseClicked(e -> {
             setScreenTitle("Home Screen");
             homeScreenHandler.show();
@@ -73,7 +78,6 @@ public class InvoiceListHandler extends BaseScreenHandler {
     }
 
     private void initializeTableColumns() throws SQLException {
-        // Map TableColumns to corresponding fields in Invoice class
         sttColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaypalId()));
         amountColumn.setCellValueFactory(cellData -> {
@@ -84,7 +88,6 @@ public class InvoiceListHandler extends BaseScreenHandler {
         statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         invoice_detail.setCellValueFactory(cellData -> {
             Button detailButton = createDetailButton(cellData.getValue());
-            //System.out.println(cellData.getValue());
             return new SimpleObjectProperty<>(detailButton);
         });
         invoice_detail.setCellFactory(col -> new TableCell<>() {
@@ -103,18 +106,14 @@ public class InvoiceListHandler extends BaseScreenHandler {
     private Button createDetailButton(Invoice invoice) {
         Button detailButton = new Button();
         detailButton.setText("Detail");
-//        String status = invoice.getStatus();
 
         detailButton.setOnMouseClicked(e -> {
             InvoiceDetailHandler invoiceDetailHandler;
             try {
-                //System.out.println(invoice.getId());
                 invoiceDetailHandler = new InvoiceDetailHandler(this.stage, invoice, Configs.INVOICE_DETAIL_PATH);
                 invoiceDetailHandler.requestToDetail(this);
                 invoiceDetailHandler.setHomeScreenHandler(this.homeScreenHandler);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (SQLException ex) {
+            } catch (IOException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -123,13 +122,12 @@ public class InvoiceListHandler extends BaseScreenHandler {
     }
 
     private void populateTable() {
-        //Convert ArrayList to ObservableList and set it to the table
         ObservableList<Invoice> observableData = FXCollections.observableArrayList(dataInvoice);
         tableView.setItems(observableData);
     }
 
     public InvoiceListController getBController(){
-        return (InvoiceListController) super.getBController();
+        return invoiceListController; // Return the initialized controller
     }
 
     public void requestToInvoiceList(BaseScreenHandler prevScreen) throws SQLException {
@@ -139,35 +137,24 @@ public class InvoiceListHandler extends BaseScreenHandler {
     }
 
     private void loadData() throws SQLException {
-        dataInvoice = Invoice.getListInvoice();
+        // Fetch invoices using the controller
+        dataInvoice = getBController().getListInvoice();
         initializeTableColumns();
         populateTable();
-        //tableView.lookup()
     }
+
     public void CleanInvoiceList() throws SQLException {
         String sql = "DELETE FROM Invoice WHERE VNPayId = ?;";
         Connection connection = AIMSDB.getConnection();
-        PreparedStatement preparedStatement = null;
-        int res;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);){
             preparedStatement.setString(1, "");
-            //preparedStatement.setString(2, "CREATED");
-            res = preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            preparedStatement.executeUpdate();
         }
+
         String sql1 = "DELETE FROM Invoice WHERE status = ?;";
-        PreparedStatement preparedStatement1 = null;
-        int res1;
-        try {
-            preparedStatement1 = connection.prepareStatement(sql1);
-            preparedStatement1.setString(1, "CREATED");
-            res1 = preparedStatement1.executeUpdate();
-            preparedStatement1.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql1);){
+            preparedStatement.setString(1, "CREATED");
+            preparedStatement.executeUpdate();
         }
     }
 }

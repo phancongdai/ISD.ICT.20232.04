@@ -80,7 +80,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     private List displayedItems;
 
-    public static HomeScreenHandler _instance;
+
 
     public HomeScreenHandler(Stage stage, String screenPath) throws IOException{
         super(stage, screenPath);

@@ -108,6 +108,7 @@ public class AuthenticationHandler implements Initializable {
                     }
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Login error: " + e.getMessage());
             }
         }

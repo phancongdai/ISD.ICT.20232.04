@@ -1,6 +1,6 @@
 package views.screen.home_admin;
 
-import controller.AdminCRUDController;
+import controller.AdminController;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,15 +43,15 @@ public class MediaAdminHandler extends FXMLScreenHandler {
 
     private final Media media;
     private final AdminHomeScreenHandler home;
-    private final AdminCRUDController adminCRUDController;
+    private final AdminController adminController;
 
     private static final Logger LOGGER = Utils.getLogger(MediaAdminHandler.class.getName());
 
-    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home, AdminCRUDController adminCRUDController) throws IOException {
+    public MediaAdminHandler(String screenPath, Media media, AdminHomeScreenHandler home, AdminController adminController) throws IOException {
         super(screenPath);
         this.media = media;
         this.home = home;
-        this.adminCRUDController = adminCRUDController;
+        this.adminController = adminController;
 
         setMediaInfo();
 
@@ -103,7 +103,7 @@ public class MediaAdminHandler extends FXMLScreenHandler {
 
         // Remove item and reload
         item_form.setVisible(false);
-        adminCRUDController.deleteMedia(media.getId());
+        adminController.deleteMedia(media.getId());
         home.refreshMediaList();
     }
 
@@ -136,8 +136,8 @@ public class MediaAdminHandler extends FXMLScreenHandler {
 
         if (response == JOptionPane.YES_OPTION) {
 
-            adminCRUDController.changeQuantity(media.getId(), Integer.parseInt(availResult.get()));
-            adminCRUDController.changePrice(media.getId(), Integer.parseInt(priceResult.get().replaceAll("[^0-9]", "").trim()));
+            adminController.changeQuantity(media.getId(), Integer.parseInt(availResult.get()));
+            adminController.changePrice(media.getId(), Integer.parseInt(priceResult.get().replaceAll("[^0-9]", "").trim()));
         }
 
         home.refreshMediaList();

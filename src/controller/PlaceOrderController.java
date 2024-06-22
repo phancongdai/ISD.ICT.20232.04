@@ -3,7 +3,8 @@ package controller;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
 import entity.invoice.Invoice;
-import entity.media.Media;
+import entity.invoice.InvoiceRepository;
+import entity.invoice.SQLInvoiceRepository;
 import entity.order.Order;
 import entity.order.OrderMedia;
 
@@ -14,25 +15,21 @@ import java.util.logging.Logger;
 
 public class PlaceOrderController extends BaseController{
 
-    /**
-     * Just for logging purpose
-     */
     private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
 
-    /**
-     * This method checks the avalibility of product when user click PlaceOrder button
-     * @throws SQLException
-     */
-    public void placeOrder() throws SQLException{
+    // Declare the InvoiceRepository
+    private InvoiceRepository invoiceRepository;
+
+    // Constructor to initialize the repository
+    public PlaceOrderController() {
+        this.invoiceRepository = new SQLInvoiceRepository(); // Use dependency injection or initialize here
+    }
+
+    public void placeOrder() throws SQLException {
         Cart.getCart().checkAvailabilityOfProduct();
     }
 
-    /**
-     * This method creates the new Order based on the Cart
-     * @return Order
-     * @throws SQLException
-     */
-    public Order createOrder() throws SQLException{
+    public Order createOrder() throws SQLException {
         Order order = new Order();
         double tmpweight = 0;
         for (Object object : Cart.getCart().getListMedia()) {
@@ -48,31 +45,19 @@ public class PlaceOrderController extends BaseController{
         return order;
     }
 
-    /**
-     * This method creates the new Invoice based on order
-     * @param order
-     * @return Invoice
-     */
     public Invoice createInvoice(Order order) throws SQLException {
-        //this.interbankInterface = new InterbankSubsystem();
-        //String id = this.interbankInterface.getUrlPayOrder(order.getAmount() + calculateShippingFee(order));
         Invoice invoice = new Invoice(order);
-        invoice.saveInvoice();
+        // Save the invoice using the repository
+        invoiceRepository.save(invoice);
         return invoice;
     }
 
-    /**
-     * This method takes responsibility for processing the shipping info from user
-     * @param info
-     * @throws InterruptedException
-     */
     public void processDeliveryInfo(HashMap<String, String> info) throws InterruptedException {
         LOGGER.info("Process Delivery Info");
         LOGGER.info(info.toString());
         // Validate delivery info using DeliveryValidator
         DeliveryValidator.validateDeliveryInfo(info);
     }
-
     /**
      * This method calculates the shipping fees of order
      * @param order

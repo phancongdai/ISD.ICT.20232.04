@@ -3,6 +3,8 @@ package views.screen.invoicelist;
 import controller.InvoiceListController;
 import entity.invoice.Invoice;
 import javafx.beans.property.DoubleProperty;
+import entity.invoice.InvoiceRepository;
+import entity.invoice.SQLInvoiceRepository;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,7 +28,6 @@ import java.util.ArrayList;
 public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
 
     private ArrayList<Invoice> dataInvoice;
-
     private AdminHomeScreenHandler home;
 
     @FXML
@@ -50,20 +51,36 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
     @FXML
     private TableColumn<Invoice, String> invoice_custom;
 
+    // Use the repository interface for database operations
+    private InvoiceRepository invoiceRepository;
+
     public InvoiceListAdminHandler(Stage stage, String screenPath) throws IOException, SQLException {
         super(stage, screenPath);
+
+        // Initialize the repository with the appropriate implementation
+        this.invoiceRepository = new SQLInvoiceRepository();
 
         loadData();
 
         File file = new File("assets/images/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
-        // on mouse clicked, we back to home
+
         aimsImage.setOnMouseClicked(e -> adminHomeScreenHandler.show());
     }
 
+    public InvoiceListController getBController() {
+        return (InvoiceListController) super.getBController();
+    }
+
+    private void loadData() throws SQLException {
+        // Load invoices using the repository
+        dataInvoice = new ArrayList<>(invoiceRepository.getAll());
+        initializeTableColumns();
+        populateTable();
+    }
+
     private void initializeTableColumns() {
-        // Map TableColumns to corresponding fields in Invoice class
         sttColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaypalId()));
         //amountColumn.setCellValueFactory(cellData -> new DoubleProperty(cellData.getValue().getAmount()).asObject());
@@ -71,10 +88,12 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
             //int multipliedValue = cellData.getValue().getAmount() * 1000;
             return new SimpleStringProperty(String.valueOf(cellData.getValue().getAmount()*1000) + " đ");
         });
+
         statusColumn.setCellValueFactory(cellData -> {
             Button statusButton = createStatusButton(cellData.getValue());
             return new SimpleObjectProperty<>(statusButton);
         });
+
         statusColumn.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Button button, boolean empty) {
@@ -95,20 +114,17 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
 
         if ("PAYMENT COMPLETED".equals(invoice.getStatus())) {
             statusButton.setOnAction(event -> {
-                // Create a context menu with options
                 ContextMenu contextMenu = new ContextMenu();
                 MenuItem approveItem = new MenuItem("APPROVE");
                 MenuItem rejectItem = new MenuItem("REJECT");
 
                 approveItem.setOnAction(e -> {
-                    invoice.setStatus("APPROVED");
                     updateInvoiceStatus(invoice, "APPROVED");
                     statusButton.setText("APPROVED");
                     refreshTable();
                 });
 
                 rejectItem.setOnAction(e -> {
-                    invoice.setStatus("REFUND");
                     updateInvoiceStatus(invoice, "REFUND");
                     statusButton.setText("REFUND");
                     refreshTable();
@@ -124,8 +140,9 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
 
     private void updateInvoiceStatus(Invoice invoice, String status) {
         try {
-            // Update the status in the database
-            Invoice.updateStatus(invoice.getId(), status);
+            // Use the repository to update the invoice status
+            invoice.setStatus(status);
+            invoiceRepository.updateStatus(invoice.getId(), status);
         } catch (SQLException e) {
             try {
                 PopupScreen.error(e.getMessage());
@@ -136,25 +153,13 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
     }
 
     private void refreshTable() {
-        ObservableList<Invoice> observableData = FXCollections.observableArrayList(dataInvoice);
-        tableView.setItems(observableData);
         tableView.refresh();
-    }
-
-    public InvoiceListController getBController() {
-        return (InvoiceListController) super.getBController();
     }
 
     public void requestToInvoiceList(BaseScreenAdminHandler prevScreen) throws SQLException {
         setPreviousScreen(prevScreen);
         setScreenTitle("Invoice List Screen");
         show();
-    }
-
-    private void loadData() throws SQLException {
-        dataInvoice = Invoice.getListInvoice();
-        initializeTableColumns();
-        populateTable();
     }
 
     private void populateTable() {

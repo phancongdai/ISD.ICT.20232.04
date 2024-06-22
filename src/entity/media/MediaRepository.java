@@ -1,69 +1,87 @@
 package entity.media;
+
 import entity.db.AIMSDB;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaRepository implements IMediaRepository{
+public class MediaRepository implements IMediaRepository {
+    private Connection conn = AIMSDB.getConnection();
 
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM Media WHERE id = ?";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        stm.setInt(1, id);
-        ResultSet res = stm.executeQuery();
-        if (res.next()) {
-            return extractMediaFromResultSet(res);
-        }
-        return null;
-    }
-
-    public List<Media> getAllMedia() throws SQLException {
+    @Override
+    public List<Media> getAllMedia() {
+        List<Media> mediaList = new ArrayList<>();
         String sql = "SELECT * FROM Media";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        ResultSet res = stm.executeQuery();
-        return extractMediaListFromResultSet(res);
+        try (PreparedStatement stm = conn.prepareStatement(sql);
+             ResultSet res = stm.executeQuery()) {
+            mediaList = extractMediaListFromResultSet(res);
+        } catch (SQLException e) {
+            // Handle or log the exception
+            e.printStackTrace();
+        }
+        return mediaList;
     }
 
-    public List<Media> getMediaByType(String type) throws SQLException {
+    @Override
+    public List<Media> getMediaByType(String type) {
+        List<Media> mediaList = new ArrayList<>();
         String sql = "SELECT * FROM Media WHERE type = ?";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        stm.setString(1, type);
-        ResultSet res = stm.executeQuery();
-        return extractMediaListFromResultSet(res);
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setString(1, type);
+            try (ResultSet res = stm.executeQuery()) {
+                mediaList = extractMediaListFromResultSet(res);
+            }
+        } catch (SQLException e) {
+            // Handle or log the exception
+            e.printStackTrace();
+        }
+        return mediaList;
     }
 
-    public void updateMediaFieldById(int id, String field, Object value) throws SQLException {
+    @Override
+    public void updateMediaFieldById(int id, String field, Object value) {
         String sql = "UPDATE Media SET " + field + " = ? WHERE id = ?";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        if (value instanceof String) {
-            stm.setString(1, (String) value);
-        } else if (value instanceof Integer) {
-            stm.setInt(1, (Integer) value);
-        } // Add other types as needed
-        stm.setInt(2, id);
-        stm.executeUpdate();
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setString(1, value.toString());
+            stm.setInt(2, id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            // Handle or log the exception
+            e.printStackTrace();
+        }
     }
 
-    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) throws SQLException {
+    @Override
+    public void addNewMedia(String title, String type, String category, String imgUrl, double price, int quantity) {
         String sql = "INSERT INTO Media (title, category, price, quantity, type, imageURL) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        stm.setString(1, title);
-        stm.setString(2, category);
-        stm.setDouble(3, price);
-        stm.setInt(4, quantity);
-        stm.setString(5, type);
-        stm.setString(6, imgUrl);
-        stm.executeUpdate();
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setString(1, title);
+            stm.setString(2, category);
+            stm.setDouble(3, price);
+            stm.setInt(4, quantity);
+            stm.setString(5, type);
+            stm.setString(6, imgUrl);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            // Handle or log the exception
+            e.printStackTrace();
+        }
     }
 
-    public void deleteMediaById(int id) throws SQLException {
+    @Override
+    public void deleteMediaById(int id) {
         String sql = "DELETE FROM Media WHERE id = ?";
-        PreparedStatement stm = AIMSDB.getConnection().prepareStatement(sql);
-        stm.setInt(1, id);
-        stm.executeUpdate();
+        try (PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            // Handle or log the exception
+            e.printStackTrace();
+        }
     }
 
     private List<Media> extractMediaListFromResultSet(ResultSet res) throws SQLException {
