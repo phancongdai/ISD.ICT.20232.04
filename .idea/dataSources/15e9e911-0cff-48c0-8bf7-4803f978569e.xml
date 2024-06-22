@@ -499,7 +499,7 @@
     <routine id="190" parent="1" name="fts5"/>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-06-19.03:08:46</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-06-21.12:46:18</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1840,169 +1840,177 @@
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <key id="616" parent="560">
+    <column id="616" parent="560" name="weight">
+      <DasType>REAL|0s</DasType>
+      <Position>8</Position>
+    </column>
+    <column id="617" parent="560" name="EligibleForRushOrder">
+      <DasType>TEXT|0s</DasType>
+      <Position>9</Position>
+    </column>
+    <key id="618" parent="560">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="617" parent="561" name="id">
+    <column id="619" parent="561" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="618" parent="561" name="name">
+    <column id="620" parent="561" name="name">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="619" parent="561" name="address">
+    <column id="621" parent="561" name="address">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="620" parent="561" name="phone">
+    <column id="622" parent="561" name="phone">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="621" parent="561" name="shipping_fee">
-      <DasType>INTEGER|0s</DasType>
+    <column id="623" parent="561" name="shipping_fee">
+      <DasType>REAL|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <key id="622" parent="561">
+    <key id="624" parent="561">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="623" parent="562" name="mediaID">
+    <column id="625" parent="562" name="mediaID">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="624" parent="562" name="orderID">
+    <column id="626" parent="562" name="orderID">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="625" parent="562" name="price">
+    <column id="627" parent="562" name="price">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="626" parent="562" name="quantity">
+    <column id="628" parent="562" name="quantity">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <foreign-key id="627" parent="562" name="fk_ordermedia_media">
+    <foreign-key id="629" parent="562" name="fk_ordermedia_media">
       <ColNames>mediaID</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Media</RefTableName>
     </foreign-key>
-    <foreign-key id="628" parent="562" name="fk_ordermedia_order">
+    <foreign-key id="630" parent="562" name="fk_ordermedia_order">
       <ColNames>orderID</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Order</RefTableName>
     </foreign-key>
-    <index id="629" parent="562" name="sqlite_autoindex_OrderMedia_1">
+    <index id="631" parent="562" name="sqlite_autoindex_OrderMedia_1">
       <ColNames>mediaID
 orderID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="630" parent="562" name="OrderMedia.fk_ordermedia_order_idx">
+    <index id="632" parent="562" name="OrderMedia.fk_ordermedia_order_idx">
       <ColNames>orderID</ColNames>
     </index>
-    <key id="631" parent="562">
+    <key id="633" parent="562">
       <ColNames>mediaID
 orderID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_OrderMedia_1</UnderlyingIndexName>
     </key>
-    <column id="632" parent="563" name="id">
+    <column id="634" parent="563" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="633" parent="563" name="invoiceId">
+    <column id="635" parent="563" name="invoiceId">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="634" parent="563" name="createAt">
+    <column id="636" parent="563" name="createAt">
       <DasType>DATETIME|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="635" parent="563" name="refundId">
+    <column id="637" parent="563" name="refundId">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <key id="636" parent="563">
+    <key id="638" parent="563">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="637" parent="564" name="id">
+    <column id="639" parent="564" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="638" parent="564" name="name">
+    <column id="640" parent="564" name="name">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="639" parent="564" name="email">
+    <column id="641" parent="564" name="email">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="640" parent="564" name="address">
+    <column id="642" parent="564" name="address">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="641" parent="564" name="phone">
+    <column id="643" parent="564" name="phone">
       <DasType>VARCHAR(45)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="642" parent="564" name="password">
+    <column id="644" parent="564" name="password">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="643" parent="564">
+    <key id="645" parent="564">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="644" parent="565" name="type">
+    <column id="646" parent="565" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="645" parent="565" name="name">
+    <column id="647" parent="565" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="646" parent="565" name="tbl_name">
+    <column id="648" parent="565" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="647" parent="565" name="rootpage">
+    <column id="649" parent="565" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="648" parent="565" name="sql">
+    <column id="650" parent="565" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="649" parent="566" name="name">
+    <column id="651" parent="566" name="name">
       <Position>1</Position>
     </column>
-    <column id="650" parent="566" name="seq">
+    <column id="652" parent="566" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

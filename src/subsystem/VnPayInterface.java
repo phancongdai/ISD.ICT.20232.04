@@ -12,7 +12,7 @@ public interface VnPayInterface {
     /**
      * Pay order, and then return the payment transaction.
      */
-    public abstract String generatePayUrl(int amount, String contents) throws PaymentException, UnrecognizedException;
+    public abstract String generatePayUrl(double amount, String contents) throws PaymentException, UnrecognizedException;
 
     public PaymentTransaction makePaymentTransaction(Response response) throws ParseException;
 }

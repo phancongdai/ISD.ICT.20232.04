@@ -56,7 +56,7 @@ public class InvoiceDetailHandler extends BaseScreenHandler {
         this.invoice = invoice;
         id.setText(String.valueOf(invoice.getId()));
 //        orderId.setText(String.valueOf(invoice.getOrder().getID()));
-        amount.setText(String.valueOf(invoice.getAmount()));
+        amount.setText(String.format("%.3f",invoice.getAmount())+" đ");
         paypalId.setText(invoice.getPaypalId());
         status.setText(invoice.getStatus());
         Connection connection = AIMSDB.getConnection();

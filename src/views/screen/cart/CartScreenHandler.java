@@ -202,9 +202,9 @@ public class CartScreenHandler extends BaseScreenHandler {
 		int amount = subtotal + vat;
 		LOGGER.info("amount " + amount);
 		// update subtotal and amount of Cart
-		labelSubtotal.setText(Utils.getCurrencyFormat(subtotal));
-		labelVAT.setText(Utils.getCurrencyFormat(vat));
-		labelAmount.setText(Utils.getCurrencyFormat(amount));
+		labelSubtotal.setText(Utils.getCurrencyFormat(subtotal*1000));
+		labelVAT.setText(Utils.getCurrencyFormat(vat*1000));
+		labelAmount.setText(Utils.getCurrencyFormat(amount*1000));
 	}
 	
 	private void displayCartWithMediaAvailability(){

@@ -1,5 +1,11 @@
 package entity.media;
 
+import entity.db.AIMSDB;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
 
 /**
@@ -14,6 +20,30 @@ public class Media {
     private int quantity;
     private String type;
     private String imageURL;
+
+    private double weight;
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getWeight() throws SQLException {
+        Connection connection = AIMSDB.getConnection();
+        String sql = "Select weight From Media where id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, this.id);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    return resultSet.getDouble(1);
+                } else {
+                    throw new SQLException("Weight of Media with ID " + this.id + " not found.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private boolean isSupportedPlaceRushOrder = new Random().nextBoolean();
 

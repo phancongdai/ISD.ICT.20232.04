@@ -57,7 +57,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
         type.setText(media.getType());
         title.setText(media.getTitle());
         category.setText(media.getCategory());
-        price.setText(String.valueOf(media.getPrice()));
+        price.setText(String.valueOf(media.getPrice())+".000 đ");
         quantity.setText(String.valueOf(media.getQuantity()));
     }
 

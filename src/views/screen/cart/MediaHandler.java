@@ -76,7 +76,7 @@ public class MediaHandler extends FXMLScreenHandler {
 
 	private void setMediaInfo() {
 		title.setText(cartMedia.getMedia().getTitle());
-		price.setText(Utils.getCurrencyFormat(cartMedia.getPrice()));
+		price.setText(Utils.getCurrencyFormat(cartMedia.getPrice()*1000));
 		File file = new File(cartMedia.getMedia().getImageURL());
 		Image im = new Image(file.toURI().toString());
 		image.setImage(im);
@@ -141,7 +141,7 @@ public class MediaHandler extends FXMLScreenHandler {
 			// update quantity of mediaCart in useCart
 			cartMedia.setQuantity(numOfProd);
 			// update the total of mediaCart
-			price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()));
+			price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()*1000));
 			// update subtotal and amount of Cart
 			cartScreen.updateCartAmount();
 

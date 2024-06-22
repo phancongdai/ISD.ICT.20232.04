@@ -96,13 +96,13 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		if(order.getTypePayment().toLowerCase()=="rush order"){
 			String provincetmp = String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase();
 			//System.out.println(String.valueOf(order.getDeliveryInfo().get("province")).toLowerCase());
-			if(!provincetmp.equals("hà nội")) {
+			if((!provincetmp.equals("hà nội"))&&(!provincetmp.equals("hồ chí minh"))) {
 				Logger.getLogger("Invalid delivery information for Rush Order").info(String.valueOf(order.getDeliveryInfo()));
 				PopupScreen.error("Your address is not available for Rush order delivery!", 3);
 				return;
 			}
 		}
-		int shippingFees = getBController().calculateShippingFee(order);
+		double shippingFees = getBController().calculateShippingFee(order);
 		order.setShippingFees(shippingFees);
 		order.saveOrder();
 		// create invoice screen

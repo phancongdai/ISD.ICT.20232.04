@@ -12,9 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Order {
-
+    private double totalweight;
     private int ID;
-    private int shippingFees;
+    private double shippingFees;
+
+    public double getTotalweight() {
+        return totalweight;
+    }
+
+    public void setTotalweight(double weight) {
+        this.totalweight = weight;
+    }
+
     private List lstOrderMedia;
     private HashMap<String, String> deliveryInfo;
 
@@ -42,11 +51,11 @@ public class Order {
         this.lstOrderMedia = lstOrderMedia;
     }
 
-    public void setShippingFees(int shippingFees) {
+    public void setShippingFees(double shippingFees) {
         this.shippingFees = shippingFees;
     }
 
-    public int getShippingFees() {
+    public double getShippingFees() {
         return shippingFees;
     }
 
@@ -99,7 +108,7 @@ public class Order {
             preparedStatement.setString(1, this.deliveryInfo.get("name"));
             preparedStatement.setString(2, deliveryInfo.get("phone"));
             preparedStatement.setString(3, deliveryInfo.get("address"));
-            preparedStatement.setInt(4, getShippingFees());
+            preparedStatement.setDouble(4, getShippingFees());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();

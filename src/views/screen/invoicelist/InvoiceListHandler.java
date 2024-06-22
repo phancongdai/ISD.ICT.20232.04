@@ -47,7 +47,7 @@ public class InvoiceListHandler extends BaseScreenHandler {
     private TableColumn<Invoice, String> idColumn;
 
     @FXML
-    private TableColumn<Invoice, Integer> amountColumn;
+    private TableColumn<Invoice, String> amountColumn;
 
     @FXML
     private TableColumn<Invoice, String> statusColumn;
@@ -76,7 +76,11 @@ public class InvoiceListHandler extends BaseScreenHandler {
         // Map TableColumns to corresponding fields in Invoice class
         sttColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaypalId()));
-        amountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getAmount()).asObject());
+        amountColumn.setCellValueFactory(cellData -> {
+            //int multipliedValue = cellData.getValue().getAmount() * 1000;
+            return new SimpleStringProperty(String.format( "%.3f",cellData.getValue().getAmount()) + " đ");
+        });
+
         statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         invoice_detail.setCellValueFactory(cellData -> {
             Button detailButton = createDetailButton(cellData.getValue());

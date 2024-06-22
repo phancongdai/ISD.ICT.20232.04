@@ -10,7 +10,7 @@ public class Invoice {
 
     private int Id;
     private Order order;
-    private int amount;
+    private double amount;
     private String paypalId;
     private String status = "CREATED";
 
@@ -35,14 +35,14 @@ public class Invoice {
     public int getOrderId() {
         return this.order.getID();
     }
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
     public void setId(int id){this.Id = id;}
     public int getId(){return this.Id;}
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -132,7 +132,7 @@ public class Invoice {
         while (res.next()) {
             Invoice invoice = new Invoice();
             invoice.setId(res.getInt("id"));
-            invoice.setAmount(res.getInt("amount"));
+            invoice.setAmount(res.getDouble("amount"));
             invoice.setPaypalId(res.getString("VNPayId"));
             invoice.setStatus(res.getString("status"));
             invoices.add(invoice);

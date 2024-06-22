@@ -20,12 +20,12 @@ public class VnPaySubsystemController {
         return null;
     }
 
-    public String generatePayOrderUrl(int money, String contents) throws IOException {
+    public String generatePayOrderUrl(double money, String contents) throws IOException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = money * 100L * 1000;
+        int amount = (int) (money * 100L * 1000);
 
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);

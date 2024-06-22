@@ -125,7 +125,7 @@ public class MediaHandler extends FXMLScreenHandler{
         mediaImage.setImage(image);
 
         mediaTitle.setText(media.getTitle());
-        mediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
+        mediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()*1000));
         mediaAvail.setText(Integer.toString(media.getQuantity()));
         setImage(mediaImage, media.getImageURL());
     }

@@ -22,7 +22,7 @@ public class PaymentController extends BaseController {
 	public PaymentController() {
 		vnPayService = new VnPaySubsystem();
 	}
-	public String getUrlPay(int amount, String content) {
+	public String getUrlPay(double amount, String content) {
 		var url = vnPayService.generatePayUrl(amount, content);
 		return url;
 	}

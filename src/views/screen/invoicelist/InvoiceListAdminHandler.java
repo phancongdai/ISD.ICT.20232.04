@@ -2,6 +2,7 @@ package views.screen.invoicelist;
 
 import controller.InvoiceListController;
 import entity.invoice.Invoice;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -41,7 +42,7 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
     private TableColumn<Invoice, String> idColumn;
 
     @FXML
-    private TableColumn<Invoice, Integer> amountColumn;
+    private TableColumn<Invoice, String> amountColumn;
 
     @FXML
     private TableColumn<Invoice, Button> statusColumn;
@@ -65,7 +66,11 @@ public class InvoiceListAdminHandler extends BaseScreenAdminHandler {
         // Map TableColumns to corresponding fields in Invoice class
         sttColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaypalId()));
-        amountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getAmount()).asObject());
+        //amountColumn.setCellValueFactory(cellData -> new DoubleProperty(cellData.getValue().getAmount()).asObject());
+        amountColumn.setCellValueFactory(cellData -> {
+            //int multipliedValue = cellData.getValue().getAmount() * 1000;
+            return new SimpleStringProperty(String.valueOf(cellData.getValue().getAmount()*1000) + " đ");
+        });
         statusColumn.setCellValueFactory(cellData -> {
             Button statusButton = createStatusButton(cellData.getValue());
             return new SimpleObjectProperty<>(statusButton);

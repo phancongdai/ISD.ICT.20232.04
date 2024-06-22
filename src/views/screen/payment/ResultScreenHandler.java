@@ -20,7 +20,7 @@ public class ResultScreenHandler extends BaseScreenHandler {
 		invoiceid.setText(id);
 		bankcode.setText(bkcode);
 		transactionid.setText(transid);
-		amount.setText(am);
+		amount.setText(String.valueOf(String.format("%.3f",Double.parseDouble(am)) + " đ"));
 		transactionstatus.setText(transstatus);
 		String date =transdate.substring(6,8) +"/"+transdate.substring(4,6)+"/"+transdate.substring(0,4)+ " at " + transdate.substring(8,10)+":"+transdate.substring(10,12)+":"+transdate.substring(12,14);
 		transactiondate.setText(date);

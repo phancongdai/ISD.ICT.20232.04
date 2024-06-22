@@ -8,6 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class OrderMedia {
+    private double weight;
+
+    public double getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
     private Media media;
     private int price;

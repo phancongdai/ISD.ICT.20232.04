@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import utils.Configs;
 import views.screen.BaseScreenHandler;
 import views.screen.invoice.InvoiceScreenHandler;
+import views.screen.popup.PopupScreen;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -74,6 +75,7 @@ public class PaymentScreenHandler extends BaseScreenHandler {
                 }
 				if(!response.getVnp_ResponseCode().equals("00")){
 					try {
+						PopupScreen.error("VNPay response code: "+response.getVnp_ResponseCode()+"\nLet's check again!", 3);
 						BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
 						InvoiceScreenHandler.setScreenTitle("Invoice Screen");
 						InvoiceScreenHandler.show();
