@@ -58,7 +58,7 @@ public class CartScreenHandler extends BaseScreenHandler {
 	@FXML
 	private Button btnPlaceRushOrder;
 
-	private PlaceOrderController placeOrderController;
+	private final PlaceOrderController placeOrderController;
 
 	public CartScreenHandler(Stage stage, String screenPath, PlaceOrderController placeOrderController) throws IOException {
 		super(stage, screenPath);
@@ -158,9 +158,8 @@ public class CartScreenHandler extends BaseScreenHandler {
 	}
 
 	public void requestToPlaceRushOrder() throws SQLException, IOException {
-		OrderService orderService = new OrderService(placeOrderController);
 		try {
-			Order order = orderService.createOrder("rush order");
+			Order order = placeOrderController.createRushOrder();
 			displayShippingScreen(order);
 		} catch (MediaNotAvailableException e) {
 			displayCartWithMediaAvailability();

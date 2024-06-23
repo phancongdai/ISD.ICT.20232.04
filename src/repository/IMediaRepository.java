@@ -1,4 +1,6 @@
-package entity.media;
+package repository;
+
+import entity.media.Media;
 
 import java.sql.SQLException;
 import java.util.List;

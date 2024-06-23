@@ -1,6 +1,7 @@
-package entity.media;
+package repository;
 
 import entity.db.AIMSDB;
+import entity.media.Media;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

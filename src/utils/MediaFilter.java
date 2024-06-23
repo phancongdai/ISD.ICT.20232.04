@@ -1,4 +1,6 @@
-package entity.media;
+package utils;
+
+import entity.media.Media;
 
 import java.util.List;
 

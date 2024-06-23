@@ -24,7 +24,6 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
-import views.screen.cart.OrderService;
 import views.screen.invoicelist.InvoiceListHandler;
 import views.screen.media.MediaDetailHandler;
 import views.screen.popup.PopupScreen;

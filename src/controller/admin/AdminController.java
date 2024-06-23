@@ -1,12 +1,10 @@
 package controller.admin;
 
 import controller.BaseController;
-import entity.media.IMediaRepository;
 import entity.media.Media;
-import entity.media.MediaFilter;
-import entity.media.MediaService;
+import utils.MediaFilter;
+import service.MediaService;
 
-import java.util.ArrayList;
 import java.util.List;
 // AdminController.java
 public class AdminController extends BaseController {

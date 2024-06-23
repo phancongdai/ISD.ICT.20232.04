@@ -1,5 +1,7 @@
-package entity.media;
+package utils;
 
+
+import entity.media.Media;
 
 import java.util.ArrayList;
 import java.util.List;

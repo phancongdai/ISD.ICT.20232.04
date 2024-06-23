@@ -1,4 +1,7 @@
-package entity.media;
+package service;
+
+import entity.media.Media;
+import repository.IMediaRepository;
 
 import java.util.List;
 

@@ -4,7 +4,6 @@ import common.exception.ProcessInvoiceException;
 import entity.db.AIMSDB;
 import entity.invoice.Invoice;
 import entity.media.Media;
-import entity.media.MediaRepository;
 import entity.order.OrderMedia;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
