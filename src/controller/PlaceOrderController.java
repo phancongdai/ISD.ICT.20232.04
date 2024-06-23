@@ -8,6 +8,8 @@ import entity.invoice.InvoiceRepository;
 import entity.invoice.SQLInvoiceRepository;
 import entity.order.Order;
 import entity.order.OrderMedia;
+import service.OrderService;
+import service.RushOrderService;
 import views.screen.popup.PopupScreen;
 
 import java.io.IOException;
@@ -17,10 +19,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class PlaceOrderController extends BaseController{
-    private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
+    private static final Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
 
     // Declare the InvoiceRepository
-    private InvoiceRepository invoiceRepository;
+    private final InvoiceRepository invoiceRepository;
 
     // Constructor to initialize the repository
     public PlaceOrderController() {
@@ -31,7 +33,7 @@ public class PlaceOrderController extends BaseController{
         Cart.getCart().checkAvailabilityOfProduct();
     }
 
-    private List<String> checkRushAvailability() {
+    public List<String> checkRushAvailability() {
         return Cart.getCart().checkRushAvailability();
     }
 
@@ -51,27 +53,9 @@ public class PlaceOrderController extends BaseController{
         return order;
     }
 
-    public Order createRushOrder() throws IOException, SQLException {
-        if (getListCartMedia().isEmpty()) {
-            PopupScreen.error("You don't have anything to place");
-            throw new MediaNotAvailableException("You don't have anything to place");
-        }
-
-        List<String> unavailableList = checkRushAvailability();
-        if (!unavailableList.isEmpty()) {
-            StringBuilder message = new StringBuilder();
-            for (String title : unavailableList){
-                message.append(title).append(", ");
-            }
-            PopupScreen.error(message.append("not available for rush order").toString());
-            throw new MediaNotAvailableException("Some of the media is not available for Rush order");
-        }
-
-        checkAvailability();
-
-        Order order = createOrder();
-        order.setTypePayment("rush order");
-        return order;
+    public Order createRushOrder() throws IOException, SQLException, MediaNotAvailableException {
+        OrderService rushOrderService = new RushOrderService(this);
+        return rushOrderService.createOrder();
     }
 
     public Invoice createInvoice(Order order) throws SQLException {
