@@ -1,6 +1,6 @@
 package views.screen.home_admin;
 
-import controller.AdminController;
+import controller.admin.AdminController;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

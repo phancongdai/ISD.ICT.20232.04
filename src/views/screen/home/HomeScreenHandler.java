@@ -3,6 +3,7 @@ package views.screen.home;
 import common.exception.ViewCartException;
 import controller.HomeController;
 import controller.InvoiceListController;
+import controller.PlaceOrderController;
 import controller.ViewCartController;
 import entity.cart.Cart;
 import entity.media.Media;
@@ -23,6 +24,7 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
+import views.screen.cart.OrderService;
 import views.screen.invoicelist.InvoiceListHandler;
 import views.screen.media.MediaDetailHandler;
 import views.screen.popup.PopupScreen;
@@ -199,7 +201,10 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             CartScreenHandler cartScreen;
             try {
                 LOGGER.info("User clicked to view cart");
-                cartScreen = new CartScreenHandler(this.stage, Configs.CART_SCREEN_PATH);
+
+                PlaceOrderController placeOrderController = new PlaceOrderController();
+                cartScreen = new CartScreenHandler(this.stage, Configs.CART_SCREEN_PATH, placeOrderController);
+
                 cartScreen.setHomeScreenHandler(this);
                 cartScreen.setBController(new ViewCartController());
                 cartScreen.requestToViewCart(this);

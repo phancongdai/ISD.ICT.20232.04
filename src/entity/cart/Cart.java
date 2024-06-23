@@ -68,9 +68,21 @@ public class Cart {
             try {
                 PopupScreen.error("Some media is not available");
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("checkAvailabilityOfProduct error: " + e.getMessage());
             }
         }
+    }
+
+    public List<String> checkRushAvailability() {
+        ArrayList<String> unavailableMedia = new ArrayList<>();
+        for (CartMedia cartMedia : listCartMedia) {
+            boolean rushAvailable = cartMedia.getMedia().isSupportedPlaceRushOrder();
+            if (!rushAvailable) {
+                unavailableMedia.add(cartMedia.getMedia().getTitle());
+            }
+        }
+        return unavailableMedia;
     }
 
     public CartMedia checkMediaInCart(Media media){

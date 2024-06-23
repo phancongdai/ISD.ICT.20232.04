@@ -1,9 +1,8 @@
 package views.screen.home_admin;
 
-import controller.AdminController;
+import controller.admin.AdminController;
 import controller.InvoiceListController;
-import entity.media.Media;
-import entity.media.MediaRepository;
+import entity.media.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -215,7 +214,12 @@ public class AdminHomeScreenHandler extends BaseScreenAdminHandler implements In
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        setBController(new AdminController(new MediaRepository()));
+        setBController(
+                new AdminController(
+                        new MediaServiceImpl(new MediaRepository()),
+                        new MediaFilterImpl()
+                ));
+
         try{
             List<Media> medium = getBController().getAllMedia();
             this.homeItems = new ArrayList<>();

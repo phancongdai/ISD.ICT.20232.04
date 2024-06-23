@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 public class CartScreenHandler extends BaseScreenHandler {
 
-	private static Logger LOGGER = Utils.getLogger(CartScreenHandler.class.getName());
+	private static final Logger LOGGER = Utils.getLogger(CartScreenHandler.class.getName());
 
 	@FXML
 	private ImageView aimsImage;
@@ -58,8 +58,12 @@ public class CartScreenHandler extends BaseScreenHandler {
 	@FXML
 	private Button btnPlaceRushOrder;
 
-	public CartScreenHandler(Stage stage, String screenPath) throws IOException {
+	private PlaceOrderController placeOrderController;
+
+	public CartScreenHandler(Stage stage, String screenPath, PlaceOrderController placeOrderController) throws IOException {
 		super(stage, screenPath);
+		this.placeOrderController = placeOrderController;
+
 		// fix relative image path caused by fxml
 		File file = new File("assets/images/Logo.png");
 		Image im = new Image(file.toURI().toString());
@@ -119,11 +123,11 @@ public class CartScreenHandler extends BaseScreenHandler {
 		try {
 			// create placeOrderController and process the order
 			PlaceOrderController placeOrderController = new PlaceOrderController();
-			if (placeOrderController.getListCartMedia().size() == 0){
+			if (placeOrderController.getListCartMedia().isEmpty()){
 				PopupScreen.error("You don't have anything to place");
 				return;
 			}
-			placeOrderController.placeOrder();
+			placeOrderController.checkAvailability();
 			// display available media
 			displayCartWithMediaAvailability();
 			// create order
@@ -152,42 +156,33 @@ public class CartScreenHandler extends BaseScreenHandler {
 		}
 
 	}
+
 	public void requestToPlaceRushOrder() throws SQLException, IOException {
+		OrderService orderService = new OrderService(placeOrderController);
 		try {
-			// create placeOrderController and process the order
-			PlaceOrderController placeOrderController = new PlaceOrderController();
-			if (placeOrderController.getListCartMedia().size() == 0){
-				PopupScreen.error("You don't have anything to place", 3);
-				return;
-			}
-			placeOrderController.placeOrder();
-			// display available media
-			displayCartWithMediaAvailability();
-			// create order
-			Order order = placeOrderController.createOrder();
-			//System.out.println(order.getID() + " " + order.getAmount() + " " +order.getlstOrderMedia());
-			order.setTypePayment("rush order");
-			System.out.println(order.toString());
-			// display shipping form
-			ShippingScreenHandler ShippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
-			ShippingScreenHandler.setScreenTitle("Shipping Screen");
-			ShippingScreenHandler.setPreviousScreen(this);
-			ShippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
-			File file = new File("assets/images/Logo.png");
-			Image im = new Image(file.toURI().toString());
-			aimsImage.setImage(im);
-			// on mouse clicked, we back to home
-			aimsImage.setOnMouseClicked(e -> {
-				setScreenTitle("Home screen");
-				this.getPreviousScreen().show();
-			});
-			ShippingScreenHandler.setBController(placeOrderController);
-			ShippingScreenHandler.show();
+			Order order = orderService.createOrder("rush order");
+			displayShippingScreen(order);
 		} catch (MediaNotAvailableException e) {
-			// if some media are not available then display cart and break usecase Place Order
 			displayCartWithMediaAvailability();
 		}
+	}
 
+	private void displayShippingScreen(Order order) throws IOException {
+		ShippingScreenHandler shippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
+		shippingScreenHandler.setScreenTitle("Shipping Screen");
+		shippingScreenHandler.setPreviousScreen(this);
+		shippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+		File file = new File("assets/images/Logo.png");
+		Image im = new Image(file.toURI().toString());
+		aimsImage.setImage(im);
+
+		aimsImage.setOnMouseClicked(e -> {
+			setScreenTitle("Home screen");
+			this.getPreviousScreen().show();
+		});
+
+		shippingScreenHandler.setBController(placeOrderController);
+		shippingScreenHandler.show();
 	}
 
 	public void updateCart() throws SQLException{

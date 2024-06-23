@@ -8,9 +8,9 @@ import entity.invoice.SQLInvoiceRepository;
 import entity.order.Order;
 import entity.order.OrderMedia;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class PlaceOrderController extends BaseController{
@@ -25,8 +25,12 @@ public class PlaceOrderController extends BaseController{
         this.invoiceRepository = new SQLInvoiceRepository(); // Use dependency injection or initialize here
     }
 
-    public void placeOrder() throws SQLException {
+    public void checkAvailability() {
         Cart.getCart().checkAvailabilityOfProduct();
+    }
+
+    public List<String> checkRushAvailability() {
+        return Cart.getCart().checkRushAvailability();
     }
 
     public Order createOrder() throws SQLException {
@@ -36,7 +40,7 @@ public class PlaceOrderController extends BaseController{
             CartMedia cartMedia = (CartMedia) object;
             OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity(), cartMedia.getPrice());
             orderMedia.setWeight(cartMedia.getMedia().getWeight());
-            System.out.println("weight: "+ orderMedia.getWeight() + " and quanity: "+ orderMedia.getQuantity());
+            System.out.println("weight: "+ orderMedia.getWeight() + " and quantity: "+ orderMedia.getQuantity());
             tmpweight = tmpweight + orderMedia.getWeight() * orderMedia.getQuantity();
             System.out.println("Tmp weight: " + tmpweight);
             order.setTotalweight(tmpweight);
