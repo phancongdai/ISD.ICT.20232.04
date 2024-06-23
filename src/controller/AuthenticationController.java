@@ -20,7 +20,7 @@ public class AuthenticationController extends  BaseController{
         }
     }
 
-    public int registerNewUser(String email, String name, String password) throws SQLException {
+    public int registerNewUser(String email, String name, String password) {
         Connection connect = AIMSDB.getConnection();
         try {
             // Check exist account
